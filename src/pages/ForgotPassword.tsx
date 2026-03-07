@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -13,20 +15,21 @@ const ForgotPassword = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // TODO: Supabase resetPasswordForEmail
-    setTimeout(() => {
-      setLoading(false);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+    } else {
       setSent(true);
-    }, 500);
+    }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="w-full max-w-sm">
-        <Link to="/" className="mb-8 block text-xl font-bold text-foreground">
-          QuoteCraft
-        </Link>
-
+        <Link to="/" className="mb-8 block text-xl font-bold text-foreground">QuoteCraft</Link>
         {sent ? (
           <div className="text-center">
             <div className="mx-auto mb-4 inline-flex rounded-full bg-success/10 p-3">
@@ -37,18 +40,13 @@ const ForgotPassword = () => {
               We sent a password reset link to <span className="font-medium text-foreground">{email}</span>
             </p>
             <Button variant="outline" asChild className="w-full">
-              <Link to="/login">
-                <ArrowLeft className="mr-1 h-4 w-4" />
-                Back to login
-              </Link>
+              <Link to="/login"><ArrowLeft className="mr-1 h-4 w-4" />Back to login</Link>
             </Button>
           </div>
         ) : (
           <>
             <h1 className="mb-1 text-2xl font-bold text-foreground">Reset your password</h1>
-            <p className="mb-8 text-muted-foreground">
-              Enter your email and we'll send you a reset link.
-            </p>
+            <p className="mb-8 text-muted-foreground">Enter your email and we'll send you a reset link.</p>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -63,8 +61,7 @@ const ForgotPassword = () => {
             </form>
             <p className="mt-6 text-center text-sm text-muted-foreground">
               <Link to="/login" className="font-medium text-primary hover:underline">
-                <ArrowLeft className="mr-1 inline h-3 w-3" />
-                Back to login
+                <ArrowLeft className="mr-1 inline h-3 w-3" />Back to login
               </Link>
             </p>
           </>

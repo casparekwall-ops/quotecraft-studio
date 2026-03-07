@@ -1,23 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Users, Plus, Search, Mail, Phone } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const mockCustomers = [
-  { id: "1", name: "Sarah Johnson", email: "sarah@johnson.com", phone: "+1 555-0101", company: "Johnson Builds", quotes: 3, invoices: 2 },
-  { id: "2", name: "Mike Chen", email: "mike@chen.com", phone: "+1 555-0102", company: "", quotes: 1, invoices: 0 },
-  { id: "3", name: "Emily Davis", email: "emily@davishome.com", phone: "+1 555-0103", company: "Davis Home Reno", quotes: 2, invoices: 1 },
-  { id: "4", name: "Tom Wilson", email: "tom@wilson.com", phone: "+1 555-0104", company: "", quotes: 1, invoices: 1 },
-  { id: "5", name: "Lisa Park", email: "lisa@parkdesign.com", phone: "+1 555-0105", company: "Park Design Co", quotes: 4, invoices: 3 },
-];
+interface Customer {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  company: string | null;
+}
 
 const Customers = () => {
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const filtered = mockCustomers.filter(
-    (c) => c.name.toLowerCase().includes(search.toLowerCase()) || c.email.toLowerCase().includes(search.toLowerCase()) || c.company.toLowerCase().includes(search.toLowerCase())
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { data } = await supabase.from("customers").select("id, name, email, phone, company").order("created_at", { ascending: false });
+      setCustomers(data || []);
+      setLoading(false);
+    };
+    fetch();
+  }, []);
+
+  const filtered = customers.filter(
+    (c) => c.name.toLowerCase().includes(search.toLowerCase()) || (c.email || "").toLowerCase().includes(search.toLowerCase()) || (c.company || "").toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -28,26 +42,20 @@ const Customers = () => {
           <p className="text-muted-foreground">Manage your customer contacts.</p>
         </div>
         <Button size="sm" asChild>
-          <Link to="/customers/new">
-            <Plus className="mr-1 h-4 w-4" />
-            Add Customer
-          </Link>
+          <Link to="/customers/new"><Plus className="mr-1 h-4 w-4" />Add Customer</Link>
         </Button>
       </div>
 
-      {mockCustomers.length === 0 ? (
+      {loading ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3].map((i) => <Skeleton key={i} className="h-40 rounded-xl" />)}
+        </div>
+      ) : customers.length === 0 ? (
         <EmptyState
           icon={<Users className="h-8 w-8" />}
           title="No customers yet"
           description="Add your first customer to start creating quotes."
-          action={
-            <Button asChild>
-              <Link to="/customers/new">
-                <Plus className="mr-1 h-4 w-4" />
-                Add Customer
-              </Link>
-            </Button>
-          }
+          action={<Button asChild><Link to="/customers/new"><Plus className="mr-1 h-4 w-4" />Add Customer</Link></Button>}
         />
       ) : (
         <>
@@ -70,12 +78,8 @@ const Customers = () => {
                   </div>
                 </div>
                 <div className="space-y-1.5 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2"><Mail className="h-3.5 w-3.5" />{c.email}</div>
-                  <div className="flex items-center gap-2"><Phone className="h-3.5 w-3.5" />{c.phone}</div>
-                </div>
-                <div className="mt-4 flex gap-4 border-t border-border pt-3 text-xs text-muted-foreground">
-                  <span>{c.quotes} quotes</span>
-                  <span>{c.invoices} invoices</span>
+                  {c.email && <div className="flex items-center gap-2"><Mail className="h-3.5 w-3.5" />{c.email}</div>}
+                  {c.phone && <div className="flex items-center gap-2"><Phone className="h-3.5 w-3.5" />{c.phone}</div>}
                 </div>
               </div>
             ))}
