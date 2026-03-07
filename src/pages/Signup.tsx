@@ -1,23 +1,41 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, ArrowRight, Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      window.location.href = "/dashboard";
-    }, 500);
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: name },
+        emailRedirectTo: window.location.origin,
+      },
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Account created! Check your email to confirm.");
+      navigate("/dashboard");
+    }
   };
 
   return (
@@ -39,13 +57,9 @@ const Signup = () => {
             Start winning more jobs
             <br />with less admin.
           </p>
-          <p className="text-primary-foreground/70">
-            Create your free account and send your first quote in minutes.
-          </p>
+          <p className="text-primary-foreground/70">Create your free account and send your first quote in minutes.</p>
         </div>
-        <p className="relative z-10 text-sm text-primary-foreground/50">
-          © {new Date().getFullYear()} QuoteCraft
-        </p>
+        <p className="relative z-10 text-sm text-primary-foreground/50">© {new Date().getFullYear()} QuoteCraft</p>
       </div>
 
       <div className="flex w-full flex-col items-center justify-center px-6 lg:w-1/2">

@@ -1,23 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import StatusBadge from "@/components/StatusBadge";
 import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Receipt, Plus, Search } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Receipt, Plus, Search, CheckCircle2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
-const mockInvoices = [
-  { id: "INV-001", customer: "Sarah Johnson", amount: "$4,250.00", status: "paid" as const, date: "Mar 5, 2026", due: "Mar 19, 2026" },
-  { id: "INV-002", customer: "Tom Wilson", amount: "$3,100.00", status: "sent" as const, date: "Mar 2, 2026", due: "Mar 16, 2026" },
-  { id: "INV-003", customer: "Lisa Park", amount: "$7,800.00", status: "overdue" as const, date: "Feb 28, 2026", due: "Mar 14, 2026" },
-  { id: "INV-004", customer: "Mike Chen", amount: "$1,800.00", status: "draft" as const, date: "Mar 4, 2026", due: "Mar 18, 2026" },
-];
+interface Invoice {
+  id: string;
+  invoice_number: string;
+  status: string;
+  issue_date: string;
+  due_date: string | null;
+  total: number;
+  customers: { name: string } | null;
+}
 
 const Invoices = () => {
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const filtered = mockInvoices.filter(
-    (inv) => inv.customer.toLowerCase().includes(search.toLowerCase()) || inv.id.toLowerCase().includes(search.toLowerCase())
+
+  const fetchInvoices = async () => {
+    const { data } = await supabase
+      .from("invoices")
+      .select("id, invoice_number, status, issue_date, due_date, total, customers(name)")
+      .order("created_at", { ascending: false });
+    setInvoices((data as any) || []);
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchInvoices(); }, []);
+
+  const markAsPaid = async (id: string) => {
+    const { error } = await supabase.from("invoices").update({ status: "paid" }).eq("id", id);
+    if (error) { toast.error(error.message); } else { toast.success("Marked as paid"); fetchInvoices(); }
+  };
+
+  const filtered = invoices.filter(
+    (inv) => (inv.customers?.name || "").toLowerCase().includes(search.toLowerCase()) || inv.invoice_number.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -28,26 +53,18 @@ const Invoices = () => {
           <p className="text-muted-foreground">Manage your invoices and track payments.</p>
         </div>
         <Button size="sm" asChild>
-          <Link to="/invoices/new">
-            <Plus className="mr-1 h-4 w-4" />
-            New Invoice
-          </Link>
+          <Link to="/invoices/new"><Plus className="mr-1 h-4 w-4" />New Invoice</Link>
         </Button>
       </div>
 
-      {mockInvoices.length === 0 ? (
+      {loading ? (
+        <div className="space-y-3">{[1, 2, 3].map((i) => <Skeleton key={i} className="h-14 rounded-xl" />)}</div>
+      ) : invoices.length === 0 ? (
         <EmptyState
           icon={<Receipt className="h-8 w-8" />}
           title="No invoices yet"
           description="Create your first invoice or convert an accepted quote."
-          action={
-            <Button asChild>
-              <Link to="/invoices/new">
-                <Plus className="mr-1 h-4 w-4" />
-                Create Invoice
-              </Link>
-            </Button>
-          }
+          action={<Button asChild><Link to="/invoices/new"><Plus className="mr-1 h-4 w-4" />Create Invoice</Link></Button>}
         />
       ) : (
         <>
@@ -68,17 +85,25 @@ const Invoices = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Due</th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {filtered.map((inv) => (
-                    <tr key={inv.id} className="transition-colors hover:bg-muted/30 cursor-pointer">
-                      <td className="px-6 py-4 text-sm font-medium text-primary">{inv.id}</td>
-                      <td className="px-6 py-4 text-sm text-foreground">{inv.customer}</td>
-                      <td className="px-6 py-4 text-sm text-muted-foreground">{inv.date}</td>
-                      <td className="px-6 py-4 text-sm text-muted-foreground">{inv.due}</td>
-                      <td className="px-6 py-4 text-sm font-medium text-foreground text-right">{inv.amount}</td>
-                      <td className="px-6 py-4"><StatusBadge status={inv.status} /></td>
+                    <tr key={inv.id} className="transition-colors hover:bg-muted/30">
+                      <td className="px-6 py-4 text-sm font-medium text-primary">{inv.invoice_number}</td>
+                      <td className="px-6 py-4 text-sm text-foreground">{inv.customers?.name || "—"}</td>
+                      <td className="px-6 py-4 text-sm text-muted-foreground">{inv.issue_date}</td>
+                      <td className="px-6 py-4 text-sm text-muted-foreground">{inv.due_date || "—"}</td>
+                      <td className="px-6 py-4 text-sm font-medium text-foreground text-right">${Number(inv.total).toFixed(2)}</td>
+                      <td className="px-6 py-4"><StatusBadge status={inv.status as any} /></td>
+                      <td className="px-6 py-4 text-right">
+                        {inv.status !== "paid" && (
+                          <Button variant="outline" size="sm" onClick={() => markAsPaid(inv.id)}>
+                            <CheckCircle2 className="mr-1 h-3.5 w-3.5" />Mark Paid
+                          </Button>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

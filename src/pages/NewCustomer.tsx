@@ -6,33 +6,44 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 const NewCustomer = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    name: "", email: "", phone: "", address: "", company: "", notes: "",
-  });
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", address: "", company: "", notes: "" });
 
   const update = (field: string, value: string) => setForm({ ...form, [field]: value });
 
-  const handleSave = () => {
-    toast.success("Customer added");
-    navigate("/customers");
+  const handleSave = async () => {
+    if (!form.name.trim()) { toast.error("Name is required"); return; }
+    if (!user) return;
+    setLoading(true);
+    const { error } = await supabase.from("customers").insert({
+      user_id: user.id,
+      name: form.name,
+      email: form.email || null,
+      phone: form.phone || null,
+      address: form.address || null,
+      company: form.company || null,
+      notes: form.notes || null,
+    });
+    setLoading(false);
+    if (error) { toast.error(error.message); } else { toast.success("Customer added"); navigate("/customers"); }
   };
 
   return (
     <AppLayout>
       <div className="mb-6 flex items-center gap-3">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/customers")}>
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
+        <Button variant="ghost" size="icon" onClick={() => navigate("/customers")}><ArrowLeft className="h-4 w-4" /></Button>
         <div>
           <h1 className="text-2xl font-bold text-foreground">Add Customer</h1>
           <p className="text-muted-foreground">Add a new customer to your contacts.</p>
         </div>
       </div>
-
       <div className="max-w-2xl">
         <div className="rounded-xl border border-border bg-card p-6 shadow-card">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -41,8 +52,8 @@ const NewCustomer = () => {
               <Input placeholder="John Smith" value={form.name} onChange={(e) => update("name", e.target.value)} required />
             </div>
             <div className="space-y-2">
-              <Label>Email *</Label>
-              <Input type="email" placeholder="john@example.com" value={form.email} onChange={(e) => update("email", e.target.value)} required />
+              <Label>Email</Label>
+              <Input type="email" placeholder="john@example.com" value={form.email} onChange={(e) => update("email", e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label>Phone</Label>
@@ -62,7 +73,7 @@ const NewCustomer = () => {
             </div>
           </div>
           <div className="mt-6 flex gap-3">
-            <Button onClick={handleSave}>Save Customer</Button>
+            <Button onClick={handleSave} disabled={loading}>{loading ? "Saving..." : "Save Customer"}</Button>
             <Button variant="outline" onClick={() => navigate("/customers")}>Cancel</Button>
           </div>
         </div>
