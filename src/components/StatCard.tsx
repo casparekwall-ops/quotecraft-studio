@@ -6,14 +6,15 @@ interface StatCardProps {
   subtitle?: string;
   icon: ReactNode;
   trend?: string;
+  gradient?: string;
 }
 
-const StatCard = ({ title, value, subtitle, icon, trend }: StatCardProps) => {
+const StatCard = ({ title, value, subtitle, icon, trend, gradient }: StatCardProps) => {
   return (
-    <div className="rounded-xl border border-border bg-card p-6 shadow-card transition-all duration-200 hover:shadow-soft">
+    <div className={`rounded-xl border border-border bg-gradient-to-br ${gradient || 'from-card to-card'} p-6 shadow-card transition-all duration-200 hover:shadow-soft hover:-translate-y-0.5`}>
       <div className="mb-4 flex items-center justify-between">
         <span className="text-sm font-medium text-muted-foreground">{title}</span>
-        <div className="rounded-lg bg-primary/10 p-2 text-primary">{icon}</div>
+        <div className="rounded-lg bg-card/80 p-2 shadow-sm">{icon}</div>
       </div>
       <div className="text-3xl font-bold text-foreground">{value}</div>
       {(subtitle || trend) && (
