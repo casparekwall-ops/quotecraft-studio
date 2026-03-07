@@ -6,7 +6,7 @@ import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Receipt, Plus, Search, CheckCircle2 } from "lucide-react";
+import { Receipt, Plus, Search, CheckCircle2, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -36,9 +36,9 @@ const Invoices = () => {
 
   useEffect(() => { fetchInvoices(); }, []);
 
-  const markAsPaid = async (id: string) => {
-    const { error } = await supabase.from("invoices").update({ status: "paid" }).eq("id", id);
-    if (error) { toast.error(error.message); } else { toast.success("Marked as paid"); fetchInvoices(); }
+  const updateStatus = async (id: string, status: string, label: string) => {
+    const { error } = await supabase.from("invoices").update({ status }).eq("id", id);
+    if (error) { toast.error(error.message); } else { toast.success(`Marked as ${label}`); fetchInvoices(); }
   };
 
   const filtered = invoices.filter(
@@ -91,15 +91,20 @@ const Invoices = () => {
                 <tbody className="divide-y divide-border">
                   {filtered.map((inv) => (
                     <tr key={inv.id} className="transition-colors hover:bg-muted/30">
-                      <td className="px-6 py-4 text-sm font-medium text-primary">{inv.invoice_number}</td>
+                      <td className="px-6 py-4 text-sm font-medium text-primary"><Link to={`/invoices/${inv.id}`} className="hover:underline">{inv.invoice_number}</Link></td>
                       <td className="px-6 py-4 text-sm text-foreground">{inv.customers?.name || "—"}</td>
                       <td className="px-6 py-4 text-sm text-muted-foreground">{inv.issue_date}</td>
                       <td className="px-6 py-4 text-sm text-muted-foreground">{inv.due_date || "—"}</td>
                       <td className="px-6 py-4 text-sm font-medium text-foreground text-right">${Number(inv.total).toFixed(2)}</td>
                       <td className="px-6 py-4"><StatusBadge status={inv.status as any} /></td>
-                      <td className="px-6 py-4 text-right">
+                      <td className="px-6 py-4 text-right space-x-2">
+                        {inv.status === "draft" && (
+                          <Button variant="outline" size="sm" onClick={() => updateStatus(inv.id, "sent", "sent")}>
+                            <Send className="mr-1 h-3.5 w-3.5" />Mark Sent
+                          </Button>
+                        )}
                         {inv.status !== "paid" && (
-                          <Button variant="outline" size="sm" onClick={() => markAsPaid(inv.id)}>
+                          <Button variant="outline" size="sm" onClick={() => updateStatus(inv.id, "paid", "paid")}>
                             <CheckCircle2 className="mr-1 h-3.5 w-3.5" />Mark Paid
                           </Button>
                         )}
