@@ -134,7 +134,7 @@ const Quotes = () => {
                 <tbody className="divide-y divide-border">
                   {filtered.map((q) => (
                     <tr key={q.id} className="transition-colors hover:bg-muted/30">
-                      <td className="px-6 py-4 text-sm font-medium text-primary">{q.quote_number}</td>
+                      <td className="px-6 py-4 text-sm font-medium text-primary"><Link to={`/quotes/${q.id}`} className="hover:underline">{q.quote_number}</Link></td>
                       <td className="px-6 py-4 text-sm text-foreground">{q.customers?.name || "—"}</td>
                       <td className="px-6 py-4 text-sm text-muted-foreground">{q.issue_date}</td>
                       <td className="px-6 py-4 text-sm font-medium text-foreground text-right">${Number(q.total).toFixed(2)}</td>
