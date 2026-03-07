@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, Sparkles } from "lucide-react";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -14,7 +14,6 @@ const Signup = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // TODO: Supabase auth
     setTimeout(() => {
       setLoading(false);
       window.location.href = "/dashboard";
@@ -23,28 +22,39 @@ const Signup = () => {
 
   return (
     <div className="flex min-h-screen">
-      <div className="hidden w-1/2 flex-col justify-between bg-foreground p-12 lg:flex">
-        <Link to="/" className="text-xl font-bold text-primary-foreground">
-          QuoteCraft
-        </Link>
-        <div>
+      <div className="hidden w-1/2 flex-col justify-between p-12 lg:flex relative overflow-hidden">
+        <div className="absolute inset-0 gradient-hero" />
+        <div className="absolute top-20 right-10 h-60 w-60 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute bottom-20 left-10 h-60 w-60 rounded-full bg-white/10 blur-3xl" />
+        <div className="relative z-10">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20">
+              <Sparkles className="h-4 w-4 text-primary-foreground" />
+            </div>
+            <span className="text-xl font-bold text-primary-foreground">QuoteCraft</span>
+          </div>
+        </div>
+        <div className="relative z-10">
           <p className="mb-2 text-3xl font-bold text-primary-foreground leading-tight">
             Start winning more jobs
             <br />with less admin.
           </p>
-          <p className="text-primary-foreground/60">
+          <p className="text-primary-foreground/70">
             Create your free account and send your first quote in minutes.
           </p>
         </div>
-        <p className="text-sm text-primary-foreground/40">
+        <p className="relative z-10 text-sm text-primary-foreground/50">
           © {new Date().getFullYear()} QuoteCraft
         </p>
       </div>
 
       <div className="flex w-full flex-col items-center justify-center px-6 lg:w-1/2">
         <div className="w-full max-w-sm">
-          <Link to="/" className="mb-8 block text-xl font-bold text-foreground lg:hidden">
-            QuoteCraft
+          <Link to="/" className="mb-8 flex items-center gap-2 lg:hidden">
+            <div className="gradient-primary flex h-7 w-7 items-center justify-center rounded-lg">
+              <Sparkles className="h-3.5 w-3.5 text-primary-foreground" />
+            </div>
+            <span className="text-xl font-bold text-foreground">QuoteCraft</span>
           </Link>
           <h1 className="mb-1 text-2xl font-bold text-foreground">Create your account</h1>
           <p className="mb-8 text-muted-foreground">Get started with QuoteCraft for free.</p>

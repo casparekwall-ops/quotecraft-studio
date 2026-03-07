@@ -51,32 +51,32 @@ const Dashboard = () => {
 
       {/* Stats */}
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Total Quotes" value="24" icon={<FileText className="h-4 w-4" />} trend="+12%" subtitle="vs last month" />
-        <StatCard title="Total Invoices" value="18" icon={<Receipt className="h-4 w-4" />} trend="+8%" subtitle="vs last month" />
-        <StatCard title="Accepted Quotes" value="16" icon={<CheckCircle2 className="h-4 w-4" />} subtitle="66% acceptance rate" />
-        <StatCard title="Revenue" value="$48,200" icon={<DollarSign className="h-4 w-4" />} trend="+22%" subtitle="this month" />
+        <StatCard title="Total Quotes" value="24" icon={<FileText className="h-4 w-4 text-violet-500" />} trend="+12%" subtitle="vs last month" gradient="from-violet-500/5 to-purple-500/5" />
+        <StatCard title="Total Invoices" value="18" icon={<Receipt className="h-4 w-4 text-cyan-500" />} trend="+8%" subtitle="vs last month" gradient="from-cyan-500/5 to-blue-500/5" />
+        <StatCard title="Accepted Quotes" value="16" icon={<CheckCircle2 className="h-4 w-4 text-emerald-500" />} subtitle="66% acceptance rate" gradient="from-emerald-500/5 to-green-500/5" />
+        <StatCard title="Revenue" value="$48,200" icon={<DollarSign className="h-4 w-4 text-amber-500" />} trend="+22%" subtitle="this month" gradient="from-amber-500/5 to-orange-500/5" />
       </div>
 
       {/* Quick actions */}
       <div className="mb-8 grid gap-4 sm:grid-cols-3">
-        <Link to="/quotes/new" className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-card transition-all hover:shadow-soft">
-          <div className="rounded-lg bg-primary/10 p-2.5 text-primary"><FileText className="h-5 w-5" /></div>
+        <Link to="/quotes/new" className="flex items-center gap-3 rounded-xl border border-border bg-gradient-to-br from-violet-500/5 to-purple-500/5 p-4 shadow-card transition-all hover:shadow-soft hover:-translate-y-0.5">
+          <div className="rounded-lg bg-violet-500/10 p-2.5 text-violet-500"><FileText className="h-5 w-5" /></div>
           <div className="flex-1">
             <div className="text-sm font-semibold text-foreground">New Quote</div>
             <div className="text-xs text-muted-foreground">Create a new quote</div>
           </div>
           <ArrowRight className="h-4 w-4 text-muted-foreground" />
         </Link>
-        <Link to="/invoices/new" className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-card transition-all hover:shadow-soft">
-          <div className="rounded-lg bg-success/10 p-2.5 text-success"><Receipt className="h-5 w-5" /></div>
+        <Link to="/invoices/new" className="flex items-center gap-3 rounded-xl border border-border bg-gradient-to-br from-cyan-500/5 to-blue-500/5 p-4 shadow-card transition-all hover:shadow-soft hover:-translate-y-0.5">
+          <div className="rounded-lg bg-cyan-500/10 p-2.5 text-cyan-500"><Receipt className="h-5 w-5" /></div>
           <div className="flex-1">
             <div className="text-sm font-semibold text-foreground">New Invoice</div>
             <div className="text-xs text-muted-foreground">Create a new invoice</div>
           </div>
           <ArrowRight className="h-4 w-4 text-muted-foreground" />
         </Link>
-        <Link to="/customers/new" className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-card transition-all hover:shadow-soft">
-          <div className="rounded-lg bg-warning/10 p-2.5 text-warning"><Users className="h-5 w-5" /></div>
+        <Link to="/customers/new" className="flex items-center gap-3 rounded-xl border border-border bg-gradient-to-br from-pink-500/5 to-rose-500/5 p-4 shadow-card transition-all hover:shadow-soft hover:-translate-y-0.5">
+          <div className="rounded-lg bg-pink-500/10 p-2.5 text-pink-500"><Users className="h-5 w-5" /></div>
           <div className="flex-1">
             <div className="text-sm font-semibold text-foreground">Add Customer</div>
             <div className="text-xs text-muted-foreground">Add a new customer</div>
@@ -87,7 +87,6 @@ const Dashboard = () => {
 
       {/* Recent tables */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Recent Quotes */}
         <div className="rounded-xl border border-border bg-card shadow-card">
           <div className="flex items-center justify-between border-b border-border px-6 py-4">
             <h2 className="font-semibold text-foreground">Recent Quotes</h2>
@@ -111,7 +110,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Recent Invoices */}
         <div className="rounded-xl border border-border bg-card shadow-card">
           <div className="flex items-center justify-between border-b border-border px-6 py-4">
             <h2 className="font-semibold text-foreground">Recent Invoices</h2>

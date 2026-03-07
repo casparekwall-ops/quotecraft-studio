@@ -12,6 +12,7 @@ import {
   Menu,
   X,
   ChevronDown,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,13 +42,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const currentPage = navItems.find((item) => location.pathname.startsWith(item.url));
-
   return (
     <div className="flex min-h-screen bg-background">
       {/* Desktop sidebar */}
       <aside className="fixed left-0 top-0 hidden h-screen w-60 flex-col border-r border-border bg-card lg:flex">
-        <div className="flex h-16 items-center px-6">
+        <div className="flex h-16 items-center gap-2 px-6">
+          <div className="gradient-primary flex h-7 w-7 items-center justify-center rounded-lg">
+            <Sparkles className="h-3.5 w-3.5 text-primary-foreground" />
+          </div>
           <Link to="/dashboard" className="text-lg font-bold text-foreground">
             QuoteCraft
           </Link>
@@ -57,8 +59,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             <NavLink
               key={item.url}
               to={item.url}
-              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              activeClassName="bg-accent text-foreground font-medium"
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground"
+              activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
             >
               <item.icon className="h-4 w-4" />
               {item.title}
@@ -69,7 +71,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                <div className="gradient-primary flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-primary-foreground">
                   J
                 </div>
                 <span className="flex-1 text-left font-medium text-foreground">John Smith</span>
@@ -93,9 +95,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
       {/* Mobile header */}
       <div className="fixed left-0 right-0 top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-card px-4 lg:hidden">
-        <Link to="/dashboard" className="text-lg font-bold text-foreground">
-          QuoteCraft
-        </Link>
+        <div className="flex items-center gap-2">
+          <div className="gradient-primary flex h-7 w-7 items-center justify-center rounded-lg">
+            <Sparkles className="h-3.5 w-3.5 text-primary-foreground" />
+          </div>
+          <Link to="/dashboard" className="text-lg font-bold text-foreground">
+            QuoteCraft
+          </Link>
+        </div>
         <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
@@ -111,7 +118,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   key={item.url}
                   to={item.url}
                   className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                  activeClassName="bg-accent text-foreground font-medium"
+                  activeClassName="bg-sidebar-accent text-sidebar-accent-foreground font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <item.icon className="h-4 w-4" />
