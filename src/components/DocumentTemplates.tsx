@@ -32,6 +32,8 @@ export function generateTemplateHTML(
   const primary = brand.primary_color || "#6C47FF";
   const secondary = brand.secondary_color || "#EC4899";
   const isQuote = data.type === "quote";
+  const cur = (data.currency || "USD") as CurrencyCode;
+  const fc = (amount: number) => formatCurrency(amount, cur);
 
   const logoHTML = brand.logo_url
     ? `<img src="${brand.logo_url}" alt="Logo" style="max-height:60px;max-width:200px;object-fit:contain" />`
