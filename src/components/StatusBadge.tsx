@@ -1,14 +1,15 @@
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 type StatusType = "draft" | "sent" | "accepted" | "rejected" | "paid" | "overdue";
 
-const statusConfig: Record<StatusType, { label: string; className: string }> = {
-  draft: { label: "Draft", className: "bg-muted text-muted-foreground border-border" },
-  sent: { label: "Sent", className: "bg-violet-500/10 text-violet-600 border-violet-500/20" },
-  accepted: { label: "Accepted", className: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" },
-  rejected: { label: "Rejected", className: "bg-rose-500/10 text-rose-600 border-rose-500/20" },
-  paid: { label: "Paid", className: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" },
-  overdue: { label: "Overdue", className: "bg-amber-500/10 text-amber-600 border-amber-500/20" },
+const statusStyles: Record<StatusType, string> = {
+  draft: "bg-muted text-muted-foreground border-border",
+  sent: "bg-violet-500/10 text-violet-600 border-violet-500/20",
+  accepted: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+  rejected: "bg-rose-500/10 text-rose-600 border-rose-500/20",
+  paid: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+  overdue: "bg-amber-500/10 text-amber-600 border-amber-500/20",
 };
 
 interface StatusBadgeProps {
@@ -16,10 +17,12 @@ interface StatusBadgeProps {
 }
 
 const StatusBadge = ({ status }: StatusBadgeProps) => {
-  const config = statusConfig[status] || { label: status.charAt(0).toUpperCase() + status.slice(1), className: "bg-muted text-muted-foreground border-border" };
+  const { t } = useLanguage();
+  const style = statusStyles[status] || "bg-muted text-muted-foreground border-border";
+  const label = t.status[status] || status.charAt(0).toUpperCase() + status.slice(1);
   return (
-    <Badge variant="outline" className={`text-xs font-medium ${config.className}`}>
-      {config.label}
+    <Badge variant="outline" className={`text-xs font-medium ${style}`}>
+      {label}
     </Badge>
   );
 };

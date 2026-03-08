@@ -63,11 +63,15 @@ const NewInvoice = () => {
 
   const handleSave = async (status: "draft" | "sent" = "draft") => {
     if (!user) return;
-    if (items.every((i) => !i.name.trim())) { toast.error("Add at least one line item"); return; }
+    if (items.every((i) => !i.name.trim())) { toast.error(t.invoices.addAtLeastOneItem); return; }
     setSaving(true);
 
-    const { count } = await supabase.from("invoices").select("*", { count: "exact", head: true });
-    const invoiceNumber = `INV-${String((count || 0) + 1).padStart(3, "0")}`;
+    const { data: numData, error: numError } = await supabase.rpc("generate_document_number", {
+      p_user_id: user.id,
+      p_doc_type: "invoice",
+    });
+    if (numError || !numData) { toast.error(numError?.message || "Failed to generate number"); setSaving(false); return; }
+    const invoiceNumber = numData as string;
 
     const { data: invoice, error } = await supabase.from("invoices").insert({
       user_id: user.id, customer_id: customerId || null, invoice_number: invoiceNumber,
@@ -94,7 +98,7 @@ const NewInvoice = () => {
 
   const previewData = {
     type: "invoice" as const,
-    number: "INV-NEW",
+    number: "QC-I-NEW",
     status: "draft",
     issueDate,
     dueDate: dueDate || undefined,
