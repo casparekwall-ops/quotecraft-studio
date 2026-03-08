@@ -300,7 +300,7 @@ const Settings = () => {
             {/* Live branding preview */}
             <div className="rounded-xl border border-border bg-card p-4 shadow-card lg:col-span-3">
               <div className="mb-2 flex items-center justify-between">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Live Preview</span>
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t.settings.livePreview}</span>
                 <div className="h-2.5 w-2.5 rounded-full bg-success animate-pulse" />
               </div>
               <div className="overflow-auto rounded-lg border border-border bg-white max-h-[480px]">
