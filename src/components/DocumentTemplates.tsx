@@ -1,4 +1,5 @@
 import { BrandSettings } from "@/hooks/useBrandSettings";
+import { formatCurrency, CurrencyCode } from "@/lib/currency";
 
 export type TemplateName = "minimal" | "classic" | "bold" | "elegant" | "compact";
 
@@ -13,6 +14,7 @@ interface DocumentData {
   expiryDate?: string;
   customerName?: string;
   customerEmail?: string;
+  currency?: CurrencyCode;
   items: { name: string; description?: string; quantity: number; unitPrice: number; lineTotal: number }[];
   subtotal: number;
   tax: number;
