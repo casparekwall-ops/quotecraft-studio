@@ -251,6 +251,8 @@ const sv: TranslationKeys = {
     noData: "—",
     selectCustomer: "Välj kund",
     item: "Artikel",
+    notFound: "Hoppsan! Sidan hittades inte",
+    backToHome: "Tillbaka till startsidan",
   },
   billing: {
     title: "Fakturering",
