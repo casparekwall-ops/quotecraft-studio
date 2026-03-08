@@ -80,6 +80,7 @@ const Settings = () => {
         footer_text: settings.footer_text,
         default_quote_template: (settings.default_quote_template || "minimal") as TemplateName,
         default_invoice_template: (settings.default_invoice_template || "minimal") as TemplateName,
+        default_currency: (settings.default_currency || "USD") as CurrencyCode,
       });
     }
   }, [loading, settings]);
