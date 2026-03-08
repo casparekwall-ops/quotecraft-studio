@@ -244,7 +244,7 @@ const Settings = () => {
           <div className="grid gap-6 lg:grid-cols-5">
             <div className="rounded-xl border border-border bg-card p-6 shadow-card lg:col-span-2">
               <h2 className="mb-1 font-semibold text-foreground">{t.settings.brandingTitle}</h2>
-              <p className="mb-5 text-sm text-muted-foreground">Controls document colors</p>
+              <p className="mb-5 text-sm text-muted-foreground">{t.settings.brandingDesc}</p>
 
               {/* Color presets */}
               <Label className="mb-2 block">{t.settings.primaryColor}</Label>
