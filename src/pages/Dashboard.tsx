@@ -68,7 +68,7 @@ const Dashboard = () => {
           <StatCard title={t.dashboard.totalQuotes} value={String(stats.quotes)} icon={<FileText className="h-4 w-4 text-violet-500" />} gradient="from-violet-500/5 to-purple-500/5" />
           <StatCard title={t.dashboard.totalInvoices} value={String(stats.invoices)} icon={<Receipt className="h-4 w-4 text-cyan-500" />} gradient="from-cyan-500/5 to-blue-500/5" />
           <StatCard title={t.dashboard.acceptedQuotes} value={String(stats.accepted)} icon={<CheckCircle2 className="h-4 w-4 text-emerald-500" />} subtitle={stats.quotes ? `${Math.round((stats.accepted / stats.quotes) * 100)}% ${t.dashboard.acceptanceRate}` : undefined} gradient="from-emerald-500/5 to-green-500/5" />
-          <StatCard title={t.dashboard.revenue} value={`$${stats.revenue.toLocaleString()}`} icon={<DollarSign className="h-4 w-4 text-amber-500" />} subtitle={t.dashboard.fromPaidInvoices} gradient="from-amber-500/5 to-orange-500/5" />
+          <StatCard title={t.dashboard.revenue} value={formatCurrency(stats.revenue, defaultCur)} icon={<DollarSign className="h-4 w-4 text-amber-500" />} subtitle={t.dashboard.fromPaidInvoices} gradient="from-amber-500/5 to-orange-500/5" />
         </div>
       )}
 
