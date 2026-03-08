@@ -16,7 +16,7 @@ interface StatusBadgeProps {
 }
 
 const StatusBadge = ({ status }: StatusBadgeProps) => {
-  const config = statusConfig[status];
+  const config = statusConfig[status] || { label: status.charAt(0).toUpperCase() + status.slice(1), className: "bg-muted text-muted-foreground border-border" };
   return (
     <Badge variant="outline" className={`text-xs font-medium ${config.className}`}>
       {config.label}

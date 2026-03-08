@@ -174,7 +174,7 @@ const NewInvoice = () => {
                 <div className="flex justify-between border-t border-border pt-2 text-lg font-bold"><span className="text-foreground">Total</span><span className="text-foreground">${total.toFixed(2)}</span></div>
               </div>
               <div className="space-y-2 pt-2">
-                <Button className="w-full" variant="outline" onClick={() => handleSave("draft")} disabled={saving}>Save Draft</Button>
+                <Button className="w-full" variant="outline" onClick={() => handleSave("draft")} disabled={saving}>{saving ? "Saving..." : "Save Draft"}</Button>
                 <Button className="w-full" onClick={() => handleSave("sent")} disabled={saving}>{saving ? "Saving..." : "Save & Send"}</Button>
               </div>
             </div>
