@@ -50,7 +50,7 @@ const NewQuote = () => {
   const taxAmount = taxEnabled ? subtotal * (taxRate / 100) : 0;
   const total = subtotal + taxAmount - discount;
 
-  const handleSave = async () => {
+  const handleSave = async (status: "draft" | "sent" = "draft") => {
     if (!user) return;
     if (items.every((i) => !i.name.trim())) { toast.error("Add at least one line item"); return; }
     setSaving(true);
@@ -63,7 +63,7 @@ const NewQuote = () => {
       user_id: user.id,
       customer_id: customerId || null,
       quote_number: quoteNumber,
-      status: "draft",
+      status,
       issue_date: issueDate,
       expiry_date: expiryDate || null,
       subtotal,
@@ -91,7 +91,7 @@ const NewQuote = () => {
     }
 
     setSaving(false);
-    toast.success("Quote saved as draft");
+    toast.success(status === "sent" ? "Quote saved and sent" : "Quote saved as draft");
     navigate("/quotes");
   };
 
