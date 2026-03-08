@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useBrandSettings } from "@/hooks/useBrandSettings";
 import { supabase } from "@/integrations/supabase/client";
+import { formatCurrency, CurrencyCode } from "@/lib/currency";
 import {
   FileText, Receipt, CheckCircle2, DollarSign, Plus, Users, ArrowRight,
 } from "lucide-react";
