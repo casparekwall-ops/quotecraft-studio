@@ -1,7 +1,9 @@
 import { ReactNode } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/i18n/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import {
   LayoutDashboard, FileText, Receipt, Users, CreditCard, Settings,
   LogOut, Menu, X, ChevronDown, Sparkles,
@@ -13,21 +15,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 
-const navItems = [
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Quotes", url: "/quotes", icon: FileText },
-  { title: "Invoices", url: "/invoices", icon: Receipt },
-  { title: "Customers", url: "/customers", icon: Users },
-  { title: "Billing", url: "/billing", icon: CreditCard },
-  { title: "Settings", url: "/settings", icon: Settings },
-];
-
-interface AppLayoutProps { children: ReactNode }
-
-const AppLayout = ({ children }: AppLayoutProps) => {
+const AppLayout = ({ children }: { children: ReactNode }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const { t } = useLanguage();
+
+  const navItems = [
+    { title: t.nav.dashboard, url: "/dashboard", icon: LayoutDashboard },
+    { title: t.nav.quotes, url: "/quotes", icon: FileText },
+    { title: t.nav.invoices, url: "/invoices", icon: Receipt },
+    { title: t.nav.customers, url: "/customers", icon: Users },
+    { title: t.nav.billing, url: "/billing", icon: CreditCard },
+    { title: t.nav.settings, url: "/settings", icon: Settings },
+  ];
 
   const displayName = user?.user_metadata?.full_name || user?.email || "User";
   const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
@@ -56,6 +57,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           ))}
         </nav>
         <div className="border-t border-border p-3">
+          <div className="mb-2 px-1">
+            <LanguageSwitcher />
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
@@ -68,11 +72,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
               <DropdownMenuItem onClick={() => navigate("/settings")}>
-                <Settings className="mr-2 h-4 w-4" />Settings
+                <Settings className="mr-2 h-4 w-4" />{t.nav.settings}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
-                <LogOut className="mr-2 h-4 w-4" />Log out
+                <LogOut className="mr-2 h-4 w-4" />{t.nav.logOut}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -86,9 +90,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           </div>
           <Link to="/dashboard" className="text-lg font-bold text-foreground">QuoteCraft</Link>
         </div>
-        <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </Button>
+        <div className="flex items-center gap-1">
+          <LanguageSwitcher />
+          <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        </div>
       </div>
 
       {mobileMenuOpen && (
@@ -106,7 +113,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             </nav>
             <div className="mt-4 border-t border-border pt-4">
               <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
-                <LogOut className="h-4 w-4" />Log out
+                <LogOut className="h-4 w-4" />{t.nav.logOut}
               </button>
             </div>
           </div>

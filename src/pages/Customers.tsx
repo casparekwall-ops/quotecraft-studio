@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, Plus, Search, Mail, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 interface Customer {
   id: string;
@@ -20,6 +21,7 @@ const Customers = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const { t } = useLanguage();
 
   useEffect(() => {
     const fetch = async () => {
@@ -38,11 +40,11 @@ const Customers = () => {
     <AppLayout>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Customers</h1>
-          <p className="text-muted-foreground">Manage your customer contacts.</p>
+          <h1 className="text-2xl font-bold text-foreground">{t.customers.title}</h1>
+          <p className="text-muted-foreground">{t.customers.subtitle}</p>
         </div>
         <Button size="sm" asChild>
-          <Link to="/customers/new"><Plus className="mr-1 h-4 w-4" />Add Customer</Link>
+          <Link to="/customers/new"><Plus className="mr-1 h-4 w-4" />{t.customers.addCustomer}</Link>
         </Button>
       </div>
 
@@ -53,16 +55,16 @@ const Customers = () => {
       ) : customers.length === 0 ? (
         <EmptyState
           icon={<Users className="h-8 w-8" />}
-          title="No customers yet"
-          description="Add your first customer to start creating quotes."
-          action={<Button asChild><Link to="/customers/new"><Plus className="mr-1 h-4 w-4" />Add Customer</Link></Button>}
+          title={t.customers.noCustomersYet}
+          description={t.customers.noCustomersDesc}
+          action={<Button asChild><Link to="/customers/new"><Plus className="mr-1 h-4 w-4" />{t.customers.addCustomer}</Link></Button>}
         />
       ) : (
         <>
           <div className="mb-4">
             <div className="relative max-w-sm">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input placeholder="Search customers..." className="pl-10" value={search} onChange={(e) => setSearch(e.target.value)} />
+              <Input placeholder={t.customers.searchCustomers} className="pl-10" value={search} onChange={(e) => setSearch(e.target.value)} />
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
