@@ -16,6 +16,7 @@ import NewQuote from "./pages/NewQuote";
 import ViewQuote from "./pages/ViewQuote";
 import Invoices from "./pages/Invoices";
 import NewInvoice from "./pages/NewInvoice";
+import EditInvoice from "./pages/EditInvoice";
 import ViewInvoice from "./pages/ViewInvoice";
 import Customers from "./pages/Customers";
 import NewCustomer from "./pages/NewCustomer";
