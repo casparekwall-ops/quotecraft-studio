@@ -105,6 +105,8 @@ const Settings = () => {
         default_quote_template: form.default_quote_template,
         default_invoice_template: form.default_invoice_template,
       };
+    } else if (section === "currency") {
+      updates = { default_currency: form.default_currency };
     }
     await updateSettings(updates);
     toast.success(t.settings.saved);
