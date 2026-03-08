@@ -354,7 +354,7 @@ const Settings = () => {
                     {docType === "quote" ? t.settings.defaultQuoteTemplate : t.settings.defaultInvoiceTemplate}
                   </h2>
                   <p className="mb-4 text-sm text-muted-foreground">
-                    Used when creating new {docType}s
+                    {t.settings.templateUsedFor} {docType === "quote" ? t.quotes.title.toLowerCase() : t.invoices.title.toLowerCase()}
                   </p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                     {TEMPLATE_LIST.map(tmpl => {
