@@ -63,6 +63,7 @@ export function useBrandSettings() {
         footer_text: (data as any).footer_text || "Thank you for your business!",
         default_quote_template: (data as any).default_quote_template || "minimal",
         default_invoice_template: (data as any).default_invoice_template || "minimal",
+        default_currency: (data as any).default_currency || "USD",
         full_name: data.full_name || "",
       });
     }
