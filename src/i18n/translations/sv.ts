@@ -215,6 +215,9 @@ const sv: TranslationKeys = {
     defaultInvoiceTemplate: "Standard fakturamall",
     templateUsedFor: "Används vid skapande av nya",
     saved: "Inställningar sparade",
+    currency: "Valuta",
+    defaultCurrency: "Standardvaluta",
+    defaultCurrencyDesc: "Standardvaluta för nya offerter och fakturor. Kan ändras per dokument.",
   },
   status: {
     draft: "Utkast",
