@@ -133,7 +133,8 @@ const Landing = () => {
           <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-foreground md:text-6xl lg:text-7xl">
             {t.landing.heroTitle1}
             <br />
-            <span className="gradient-text">{t.landing.heroTitle2}</span>
+            {t.landing.heroTitle2 && <>{t.landing.heroTitle2}<br /></>}
+            <span className="gradient-text">{t.landing.heroTitle3}</span>
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground md:text-xl">
             {t.landing.heroDesc}

@@ -259,7 +259,8 @@ const en = {
   landing: {
     badge: "Built for contractors & service businesses",
     heroTitle1: "From quote to invoice",
-    heroTitle2: "in seconds.",
+    heroTitle2: "",
+    heroTitle3: "in seconds.",
     heroDesc: "QuoteCraft helps contractors and service businesses create professional quotes, send invoices and win more jobs — with less admin.",
     startFree: "Start free",
     viewPricing: "View pricing",

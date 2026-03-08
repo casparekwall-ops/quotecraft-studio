@@ -15,7 +15,8 @@ const zh: TranslationKeys = {
   landing: {
     badge: "专为承包商和服务企业打造",
     heroTitle1: "从报价到发票",
-    heroTitle2: "只需几秒。",
+    heroTitle2: "",
+    heroTitle3: "只需几秒。",
     heroDesc: "QuoteCraft帮助承包商和服务企业创建专业报价、发送发票并赢得更多业务——减少行政工作。",
     startFree: "免费开始",
     viewPricing: "查看价格",
