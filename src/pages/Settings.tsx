@@ -9,7 +9,9 @@ import { toast } from "sonner";
 import { useLanguage, Language } from "@/i18n/LanguageContext";
 import { useBrandSettings } from "@/hooks/useBrandSettings";
 import { TEMPLATE_LIST, TemplateName, generateTemplateHTML } from "@/components/DocumentTemplates";
-import { Upload, X, Check, Palette, FileText, Building2, User, Globe } from "lucide-react";
+import { Upload, X, Check, Palette, FileText, Building2, User, Globe, Coins } from "lucide-react";
+import CurrencySelect from "@/components/CurrencySelect";
+import { CurrencyCode } from "@/lib/currency";
 
 const LANGUAGES: { code: Language; flag: string; label: string }[] = [
   { code: "en", flag: "🇬🇧", label: "English" },
