@@ -43,7 +43,7 @@ const Quotes = () => {
 
   const updateStatus = async (id: string, status: string, label: string) => {
     const { error } = await supabase.from("quotes").update({ status }).eq("id", id);
-    if (error) { toast.error(error.message); } else { toast.success(`Marked as ${label}`); fetchQuotes(); }
+    if (error) { toast.error(error.message); } else { toast.success(`${t.quotes.markedAs} ${t.status[label as keyof typeof t.status] || label}`); fetchQuotes(); }
   };
 
   const convertToInvoice = async (quote: Quote) => {
