@@ -145,6 +145,7 @@ const Landing = () => {
             </a>
           </div>
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
             <Button variant="ghost" size="sm" asChild>
               <Link to="/login">Log in</Link>
             </Button>
