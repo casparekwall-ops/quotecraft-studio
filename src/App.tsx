@@ -13,6 +13,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Quotes from "./pages/Quotes";
 import NewQuote from "./pages/NewQuote";
+import EditQuote from "./pages/EditQuote";
 import ViewQuote from "./pages/ViewQuote";
 import Invoices from "./pages/Invoices";
 import NewInvoice from "./pages/NewInvoice";
