@@ -129,7 +129,7 @@ const Dashboard = () => {
                   <div className="text-xs text-muted-foreground">{inv.invoice_number} · {inv.issue_date}</div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-foreground">${Number(inv.total).toFixed(2)}</span>
+                  <span className="text-sm font-medium text-foreground">{formatCurrency(Number(inv.total), (inv.currency || defaultCur) as CurrencyCode)}</span>
                   <StatusBadge status={inv.status} />
                 </div>
               </Link>
