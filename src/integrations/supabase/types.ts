@@ -109,6 +109,7 @@ export type Database = {
       invoices: {
         Row: {
           created_at: string
+          currency: string
           customer_id: string | null
           discount: number
           due_date: string | null
@@ -126,6 +127,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          currency?: string
           customer_id?: string | null
           discount?: number
           due_date?: string | null
@@ -143,6 +145,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          currency?: string
           customer_id?: string | null
           discount?: number
           due_date?: string | null
@@ -183,6 +186,7 @@ export type Database = {
           company_phone: string | null
           company_website: string | null
           created_at: string
+          default_currency: string
           default_invoice_template: string
           default_quote_template: string
           email: string | null
@@ -203,6 +207,7 @@ export type Database = {
           company_phone?: string | null
           company_website?: string | null
           created_at?: string
+          default_currency?: string
           default_invoice_template?: string
           default_quote_template?: string
           email?: string | null
@@ -223,6 +228,7 @@ export type Database = {
           company_phone?: string | null
           company_website?: string | null
           created_at?: string
+          default_currency?: string
           default_invoice_template?: string
           default_quote_template?: string
           email?: string | null
@@ -279,6 +285,7 @@ export type Database = {
       quotes: {
         Row: {
           created_at: string
+          currency: string
           customer_id: string | null
           discount: number
           expiry_date: string | null
@@ -296,6 +303,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          currency?: string
           customer_id?: string | null
           discount?: number
           expiry_date?: string | null
@@ -313,6 +321,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          currency?: string
           customer_id?: string | null
           discount?: number
           expiry_date?: string | null
