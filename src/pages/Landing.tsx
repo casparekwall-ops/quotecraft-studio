@@ -10,79 +10,79 @@ import {
   ArrowRight,
   CheckCircle2,
   Star,
-  Sparkles,
-} from "lucide-react";
+  Sparkles } from
+"lucide-react";
 
 const Landing = () => {
   const { t } = useLanguage();
 
   const features = [
-    {
-      icon: FileText,
-      title: t.landing.feat1Title,
-      description: t.landing.feat1Desc,
-      gradient: "from-violet-500/10 to-purple-500/10",
-      iconColor: "text-violet-500",
-    },
-    {
-      icon: Receipt,
-      title: t.landing.feat2Title,
-      description: t.landing.feat2Desc,
-      gradient: "from-cyan-500/10 to-blue-500/10",
-      iconColor: "text-cyan-500",
-    },
-    {
-      icon: Users,
-      title: t.landing.feat3Title,
-      description: t.landing.feat3Desc,
-      gradient: "from-pink-500/10 to-rose-500/10",
-      iconColor: "text-pink-500",
-    },
-    {
-      icon: Zap,
-      title: t.landing.feat4Title,
-      description: t.landing.feat4Desc,
-      gradient: "from-amber-500/10 to-orange-500/10",
-      iconColor: "text-amber-500",
-    },
-  ];
+  {
+    icon: FileText,
+    title: t.landing.feat1Title,
+    description: t.landing.feat1Desc,
+    gradient: "from-violet-500/10 to-purple-500/10",
+    iconColor: "text-violet-500"
+  },
+  {
+    icon: Receipt,
+    title: t.landing.feat2Title,
+    description: t.landing.feat2Desc,
+    gradient: "from-cyan-500/10 to-blue-500/10",
+    iconColor: "text-cyan-500"
+  },
+  {
+    icon: Users,
+    title: t.landing.feat3Title,
+    description: t.landing.feat3Desc,
+    gradient: "from-pink-500/10 to-rose-500/10",
+    iconColor: "text-pink-500"
+  },
+  {
+    icon: Zap,
+    title: t.landing.feat4Title,
+    description: t.landing.feat4Desc,
+    gradient: "from-amber-500/10 to-orange-500/10",
+    iconColor: "text-amber-500"
+  }];
+
 
   const steps = [
-    { step: "01", title: t.landing.step1Title, description: t.landing.step1Desc, color: "text-violet-500" },
-    { step: "02", title: t.landing.step2Title, description: t.landing.step2Desc, color: "text-cyan-500" },
-    { step: "03", title: t.landing.step3Title, description: t.landing.step3Desc, color: "text-pink-500" },
-    { step: "04", title: t.landing.step4Title, description: t.landing.step4Desc, color: "text-amber-500" },
-  ];
+  { step: "01", title: t.landing.step1Title, description: t.landing.step1Desc, color: "text-violet-500" },
+  { step: "02", title: t.landing.step2Title, description: t.landing.step2Desc, color: "text-cyan-500" },
+  { step: "03", title: t.landing.step3Title, description: t.landing.step3Desc, color: "text-pink-500" },
+  { step: "04", title: t.landing.step4Title, description: t.landing.step4Desc, color: "text-amber-500" }];
+
 
   const plans = [
-    {
-      name: t.landing.starterName,
-      price: "$9",
-      period: t.landing.perMonth,
-      description: t.landing.starterDesc,
-      features: [t.landing.starterF1, t.landing.starterF2, t.landing.starterF3, t.landing.starterF4],
-      cta: t.landing.startFree,
-      popular: false,
-    },
-    {
-      name: t.landing.proName,
-      price: "$29",
-      period: t.landing.perMonth,
-      description: t.landing.proDesc,
-      features: [t.landing.proF1, t.landing.proF2, t.landing.proF3, t.landing.proF4, t.landing.proF5],
-      cta: t.landing.startFree,
-      popular: true,
-    },
-    {
-      name: t.landing.businessName,
-      price: "$59",
-      period: t.landing.perMonth,
-      description: t.landing.businessDesc,
-      features: [t.landing.businessF1, t.landing.businessF2, t.landing.businessF3, t.landing.businessF4, t.landing.businessF5],
-      cta: t.landing.startFree,
-      popular: false,
-    },
-  ];
+  {
+    name: t.landing.starterName,
+    price: "$9",
+    period: t.landing.perMonth,
+    description: t.landing.starterDesc,
+    features: [t.landing.starterF1, t.landing.starterF2, t.landing.starterF3, t.landing.starterF4],
+    cta: t.landing.startFree,
+    popular: false
+  },
+  {
+    name: t.landing.proName,
+    price: "$29",
+    period: t.landing.perMonth,
+    description: t.landing.proDesc,
+    features: [t.landing.proF1, t.landing.proF2, t.landing.proF3, t.landing.proF4, t.landing.proF5],
+    cta: t.landing.startFree,
+    popular: true
+  },
+  {
+    name: t.landing.businessName,
+    price: "$59",
+    period: t.landing.perMonth,
+    description: t.landing.businessDesc,
+    features: [t.landing.businessF1, t.landing.businessF2, t.landing.businessF3, t.landing.businessF4, t.landing.businessF5],
+    cta: t.landing.startFree,
+    popular: false
+  }];
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -130,7 +130,7 @@ const Landing = () => {
             <Star className="h-3.5 w-3.5 text-amber-500" />
             {t.landing.badge}
           </div>
-          <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-foreground md:text-6xl lg:text-7xl">
+          <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-foreground md:text-6xl lg:text-6xl">
             {t.landing.heroTitle1}
             <br />
             {t.landing.heroTitle2 && <>{t.landing.heroTitle2}<br /></>}
@@ -165,11 +165,11 @@ const Landing = () => {
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className={`group rounded-2xl border border-border bg-gradient-to-br ${feature.gradient} p-8 shadow-card transition-all duration-300 hover:shadow-soft hover:-translate-y-0.5`}
-              >
+            {features.map((feature) =>
+            <div
+              key={feature.title}
+              className={`group rounded-2xl border border-border bg-gradient-to-br ${feature.gradient} p-8 shadow-card transition-all duration-300 hover:shadow-soft hover:-translate-y-0.5`}>
+              
                 <div className={`mb-4 inline-flex rounded-xl bg-card p-3 shadow-sm ${feature.iconColor}`}>
                   <feature.icon className="h-6 w-6" />
                 </div>
@@ -180,7 +180,7 @@ const Landing = () => {
                   {feature.description}
                 </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -198,8 +198,8 @@ const Landing = () => {
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {steps.map((step) => (
-              <div key={step.step} className="text-center md:text-left">
+            {steps.map((step) =>
+            <div key={step.step} className="text-center md:text-left">
                 <div className={`mb-3 text-5xl font-extrabold ${step.color} opacity-30`}>
                   {step.step}
                 </div>
@@ -210,7 +210,7 @@ const Landing = () => {
                   {step.description}
                 </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -227,20 +227,20 @@ const Landing = () => {
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
-            {plans.map((plan) => (
-              <div
-                key={plan.name}
-                className={`relative flex flex-col rounded-2xl border p-8 shadow-card transition-all duration-300 hover:shadow-soft hover:-translate-y-0.5 ${
-                  plan.popular
-                    ? "border-transparent gradient-border bg-card"
-                    : "border-border bg-card"
-                }`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 gradient-primary rounded-full px-4 py-1 text-xs font-semibold text-primary-foreground">
+            {plans.map((plan) =>
+            <div
+              key={plan.name}
+              className={`relative flex flex-col rounded-2xl border p-8 shadow-card transition-all duration-300 hover:shadow-soft hover:-translate-y-0.5 ${
+              plan.popular ?
+              "border-transparent gradient-border bg-card" :
+              "border-border bg-card"}`
+              }>
+              
+                {plan.popular &&
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 gradient-primary rounded-full px-4 py-1 text-xs font-semibold text-primary-foreground">
                     {t.landing.mostPopular}
                   </div>
-                )}
+              }
                 <h3 className="mb-1 text-lg font-semibold text-foreground">
                   {plan.name}
                 </h3>
@@ -254,22 +254,22 @@ const Landing = () => {
                   {plan.description}
                 </p>
                 <ul className="mb-8 flex-1 space-y-3">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-foreground">
+                  {plan.features.map((f) =>
+                <li key={f} className="flex items-start gap-2 text-sm text-foreground">
                       <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
                       {f}
                     </li>
-                  ))}
+                )}
                 </ul>
                 <Button
-                  variant={plan.popular ? "default" : "outline"}
-                  className="w-full"
-                  asChild
-                >
+                variant={plan.popular ? "default" : "outline"}
+                className="w-full"
+                asChild>
+                
                   <Link to="/signup">{plan.cta}</Link>
                 </Button>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -314,8 +314,8 @@ const Landing = () => {
           </p>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Landing;
