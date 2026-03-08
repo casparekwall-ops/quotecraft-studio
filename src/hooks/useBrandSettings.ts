@@ -32,6 +32,7 @@ const defaults: BrandSettings = {
   footer_text: "Thank you for your business!",
   default_quote_template: "minimal",
   default_invoice_template: "minimal",
+  default_currency: "USD",
   full_name: "",
 };
 
