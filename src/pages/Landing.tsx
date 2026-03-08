@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/i18n/LanguageContext";
 import {
   FileText,
   Receipt,
@@ -12,116 +13,77 @@ import {
   Sparkles,
 } from "lucide-react";
 
-const features = [
-  {
-    icon: FileText,
-    title: "Professional Quotes",
-    description:
-      "Create beautiful, branded quotes in seconds. Add line items, tax, discounts and send to customers instantly.",
-    gradient: "from-violet-500/10 to-purple-500/10",
-    iconColor: "text-violet-500",
-  },
-  {
-    icon: Receipt,
-    title: "Invoices That Get Paid",
-    description:
-      "Convert accepted quotes to invoices with one click. Track payment status and send reminders.",
-    gradient: "from-cyan-500/10 to-blue-500/10",
-    iconColor: "text-cyan-500",
-  },
-  {
-    icon: Users,
-    title: "Customer Management",
-    description:
-      "Keep all your customer details organized. Auto-fill quotes and invoices with saved information.",
-    gradient: "from-pink-500/10 to-rose-500/10",
-    iconColor: "text-pink-500",
-  },
-  {
-    icon: Zap,
-    title: "Lightning Fast",
-    description:
-      "Built for speed. Create a full quote in under 60 seconds. No bloat, no complexity.",
-    gradient: "from-amber-500/10 to-orange-500/10",
-    iconColor: "text-amber-500",
-  },
-];
-
-const steps = [
-  {
-    step: "01",
-    title: "Add your customers",
-    description: "Import or add customer details once. Reuse them across all your documents.",
-    color: "text-violet-500",
-  },
-  {
-    step: "02",
-    title: "Create a quote",
-    description: "Add line items, set your terms, and preview your professional quote.",
-    color: "text-cyan-500",
-  },
-  {
-    step: "03",
-    title: "Send & get accepted",
-    description: "Share a link with your customer. They can view and accept it online.",
-    color: "text-pink-500",
-  },
-  {
-    step: "04",
-    title: "Convert to invoice",
-    description: "One click converts an accepted quote into a ready-to-send invoice.",
-    color: "text-amber-500",
-  },
-];
-
-const plans = [
-  {
-    name: "Starter",
-    price: "$9",
-    period: "/month",
-    description: "Perfect for solo contractors getting started.",
-    features: [
-      "Up to 10 quotes per month",
-      "Basic PDF export",
-      "Customer management",
-      "Email support",
-    ],
-    cta: "Start free",
-    popular: false,
-  },
-  {
-    name: "Pro",
-    price: "$29",
-    period: "/month",
-    description: "For growing businesses that need more power.",
-    features: [
-      "Unlimited quotes",
-      "Invoices & convert to invoice",
-      "Custom branding",
-      "Priority support",
-      "Shareable links",
-    ],
-    cta: "Start free",
-    popular: true,
-  },
-  {
-    name: "Business",
-    price: "$59",
-    period: "/month",
-    description: "For teams ready to scale operations.",
-    features: [
-      "Everything in Pro",
-      "Team accounts (coming soon)",
-      "Future integrations",
-      "Priority support",
-      "API access (coming soon)",
-    ],
-    cta: "Start free",
-    popular: false,
-  },
-];
-
 const Landing = () => {
+  const { t } = useLanguage();
+
+  const features = [
+    {
+      icon: FileText,
+      title: t.landing.feat1Title,
+      description: t.landing.feat1Desc,
+      gradient: "from-violet-500/10 to-purple-500/10",
+      iconColor: "text-violet-500",
+    },
+    {
+      icon: Receipt,
+      title: t.landing.feat2Title,
+      description: t.landing.feat2Desc,
+      gradient: "from-cyan-500/10 to-blue-500/10",
+      iconColor: "text-cyan-500",
+    },
+    {
+      icon: Users,
+      title: t.landing.feat3Title,
+      description: t.landing.feat3Desc,
+      gradient: "from-pink-500/10 to-rose-500/10",
+      iconColor: "text-pink-500",
+    },
+    {
+      icon: Zap,
+      title: t.landing.feat4Title,
+      description: t.landing.feat4Desc,
+      gradient: "from-amber-500/10 to-orange-500/10",
+      iconColor: "text-amber-500",
+    },
+  ];
+
+  const steps = [
+    { step: "01", title: t.landing.step1Title, description: t.landing.step1Desc, color: "text-violet-500" },
+    { step: "02", title: t.landing.step2Title, description: t.landing.step2Desc, color: "text-cyan-500" },
+    { step: "03", title: t.landing.step3Title, description: t.landing.step3Desc, color: "text-pink-500" },
+    { step: "04", title: t.landing.step4Title, description: t.landing.step4Desc, color: "text-amber-500" },
+  ];
+
+  const plans = [
+    {
+      name: t.landing.starterName,
+      price: "$9",
+      period: t.landing.perMonth,
+      description: t.landing.starterDesc,
+      features: [t.landing.starterF1, t.landing.starterF2, t.landing.starterF3, t.landing.starterF4],
+      cta: t.landing.startFree,
+      popular: false,
+    },
+    {
+      name: t.landing.proName,
+      price: "$29",
+      period: t.landing.perMonth,
+      description: t.landing.proDesc,
+      features: [t.landing.proF1, t.landing.proF2, t.landing.proF3, t.landing.proF4, t.landing.proF5],
+      cta: t.landing.startFree,
+      popular: true,
+    },
+    {
+      name: t.landing.businessName,
+      price: "$59",
+      period: t.landing.perMonth,
+      description: t.landing.businessDesc,
+      features: [t.landing.businessF1, t.landing.businessF2, t.landing.businessF3, t.landing.businessF4, t.landing.businessF5],
+      cta: t.landing.startFree,
+      popular: false,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       {/* Nav */}
@@ -135,22 +97,22 @@ const Landing = () => {
           </Link>
           <div className="hidden items-center gap-8 md:flex">
             <a href="#features" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-              Features
+              {t.landing.navFeatures}
             </a>
             <a href="#how-it-works" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-              How it works
+              {t.landing.navHowItWorks}
             </a>
             <a href="#pricing" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-              Pricing
+              {t.landing.navPricing}
             </a>
           </div>
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/login">Log in</Link>
+              <Link to="/login">{t.landing.logIn}</Link>
             </Button>
             <Button size="sm" asChild>
-              <Link to="/signup">Start free</Link>
+              <Link to="/signup">{t.landing.startFree}</Link>
             </Button>
           </div>
         </div>
@@ -158,7 +120,6 @@ const Landing = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-32">
-        {/* Mesh gradient background */}
         <div className="absolute inset-0 -z-10 gradient-mesh" />
         <div className="absolute top-20 left-1/4 -z-10 h-72 w-72 rounded-full bg-violet-500/10 blur-3xl" />
         <div className="absolute top-40 right-1/4 -z-10 h-72 w-72 rounded-full bg-pink-500/10 blur-3xl" />
@@ -167,25 +128,25 @@ const Landing = () => {
         <div className="mx-auto max-w-4xl px-6 text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 backdrop-blur px-4 py-1.5 text-sm text-muted-foreground shadow-card">
             <Star className="h-3.5 w-3.5 text-amber-500" />
-            Built for contractors & service businesses
+            {t.landing.badge}
           </div>
           <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            From quote to invoice
+            {t.landing.heroTitle1}
             <br />
-            <span className="gradient-text">in seconds.</span>
+            <span className="gradient-text">{t.landing.heroTitle2}</span>
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground md:text-xl">
-            QuoteCraft helps contractors and service businesses create professional quotes, send invoices and win more jobs — with less admin.
+            {t.landing.heroDesc}
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button variant="hero" size="xl" asChild>
               <Link to="/signup">
-                Start free
+                {t.landing.startFree}
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Link>
             </Button>
             <Button variant="hero-outline" size="xl" asChild>
-              <a href="#pricing">View pricing</a>
+              <a href="#pricing">{t.landing.viewPricing}</a>
             </Button>
           </div>
         </div>
@@ -196,10 +157,10 @@ const Landing = () => {
         <div className="mx-auto max-w-6xl px-6">
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-              Everything you need to run your quoting
+              {t.landing.featuresTitle}
             </h2>
             <p className="mx-auto max-w-xl text-muted-foreground">
-              Simple, powerful tools that let you focus on your trade — not paperwork.
+              {t.landing.featuresDesc}
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
@@ -229,10 +190,10 @@ const Landing = () => {
         <div className="mx-auto max-w-6xl px-6">
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-              How it works
+              {t.landing.howTitle}
             </h2>
             <p className="mx-auto max-w-xl text-muted-foreground">
-              Get up and running in minutes. No training required.
+              {t.landing.howDesc}
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -258,10 +219,10 @@ const Landing = () => {
         <div className="mx-auto max-w-5xl px-6">
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-              Simple, transparent pricing
+              {t.landing.pricingTitle}
             </h2>
             <p className="mx-auto max-w-xl text-muted-foreground">
-              Start free. Upgrade as you grow. No hidden fees.
+              {t.landing.pricingDesc}
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -276,7 +237,7 @@ const Landing = () => {
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 gradient-primary rounded-full px-4 py-1 text-xs font-semibold text-primary-foreground">
-                    Most popular
+                    {t.landing.mostPopular}
                   </div>
                 )}
                 <h3 className="mb-1 text-lg font-semibold text-foreground">
@@ -319,14 +280,14 @@ const Landing = () => {
         <div className="absolute top-10 right-1/4 -z-10 h-60 w-60 rounded-full bg-pink-500/10 blur-3xl" />
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Ready to streamline your quoting?
+            {t.landing.ctaTitle}
           </h2>
           <p className="mb-8 text-muted-foreground">
-            Join thousands of contractors saving hours every week with QuoteCraft.
+            {t.landing.ctaDesc}
           </p>
           <Button variant="hero" size="xl" asChild>
             <Link to="/signup">
-              Get started for free
+              {t.landing.ctaButton}
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
@@ -343,9 +304,9 @@ const Landing = () => {
             <span className="text-lg font-bold text-foreground">QuoteCraft</span>
           </div>
           <div className="flex gap-8 text-sm text-muted-foreground">
-            <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-            <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
-            <Link to="/login" className="hover:text-foreground transition-colors">Log in</Link>
+            <a href="#features" className="hover:text-foreground transition-colors">{t.landing.navFeatures}</a>
+            <a href="#pricing" className="hover:text-foreground transition-colors">{t.landing.navPricing}</a>
+            <Link to="/login" className="hover:text-foreground transition-colors">{t.landing.logIn}</Link>
           </div>
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} QuoteCraft
