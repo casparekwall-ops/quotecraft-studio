@@ -159,27 +159,63 @@ export type Database = {
       }
       profiles: {
         Row: {
+          company_address: string | null
+          company_email: string | null
           company_name: string | null
+          company_phone: string | null
+          company_website: string | null
           created_at: string
+          default_invoice_template: string
+          default_quote_template: string
           email: string | null
+          footer_text: string | null
           full_name: string | null
           id: string
+          language: string
+          logo_url: string | null
+          org_number: string | null
+          primary_color: string | null
+          secondary_color: string | null
           updated_at: string
         }
         Insert: {
+          company_address?: string | null
+          company_email?: string | null
           company_name?: string | null
+          company_phone?: string | null
+          company_website?: string | null
           created_at?: string
+          default_invoice_template?: string
+          default_quote_template?: string
           email?: string | null
+          footer_text?: string | null
           full_name?: string | null
           id: string
+          language?: string
+          logo_url?: string | null
+          org_number?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
           updated_at?: string
         }
         Update: {
+          company_address?: string | null
+          company_email?: string | null
           company_name?: string | null
+          company_phone?: string | null
+          company_website?: string | null
           created_at?: string
+          default_invoice_template?: string
+          default_quote_template?: string
           email?: string | null
+          footer_text?: string | null
           full_name?: string | null
           id?: string
+          language?: string
+          logo_url?: string | null
+          org_number?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
           updated_at?: string
         }
         Relationships: []
