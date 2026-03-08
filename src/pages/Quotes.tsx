@@ -61,7 +61,7 @@ const Quotes = () => {
       total: fullQuote.total, notes: fullQuote.notes, quote_id: quote.id,
     }).select().single();
 
-    if (error || !invoice) { toast.error("Failed to convert"); return; }
+    if (error || !invoice) { toast.error(t.invoices.failedToConvert); return; }
     if (quoteItems && quoteItems.length > 0) {
       await supabase.from("invoice_items").insert(
         quoteItems.map((qi) => ({ invoice_id: invoice.id, item_name: qi.item_name, description: qi.description, quantity: qi.quantity, unit_price: qi.unit_price, line_total: qi.line_total }))
