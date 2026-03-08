@@ -14,8 +14,8 @@ const fr: TranslationKeys = {
   languages: { en: "English", sv: "Svenska", de: "Deutsch", es: "Español", fr: "Français", zh: "中文", pt: "Português" },
   landing: {
     badge: "Conçu pour les entrepreneurs et prestataires",
-    heroTitle1: "Du devis à la facture",
-    heroTitle2: "",
+    heroTitle1: "Créez des devis professionnels",
+    heroTitle2: "& des factures",
     heroTitle3: "en quelques secondes.",
     heroDesc: "QuoteCraft aide les entrepreneurs et prestataires à créer des devis professionnels, envoyer des factures et décrocher plus de contrats — avec moins d'administration.",
     startFree: "Commencer gratuitement",

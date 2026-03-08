@@ -248,8 +248,8 @@ const de: TranslationKeys = {
   },
   landing: {
     badge: "Entwickelt für Auftragnehmer & Dienstleister",
-    heroTitle1: "Vom Angebot zur Rechnung",
-    heroTitle2: "",
+    heroTitle1: "Erstellen Sie professionelle Angebote",
+    heroTitle2: "& Rechnungen",
     heroTitle3: "in Sekunden.",
     heroDesc: "QuoteCraft hilft Auftragnehmern und Dienstleistern, professionelle Angebote zu erstellen, Rechnungen zu senden und mehr Aufträge zu gewinnen — mit weniger Verwaltung.",
     startFree: "Kostenlos starten",

@@ -14,8 +14,8 @@ const pt: TranslationKeys = {
   languages: { en: "English", sv: "Svenska", de: "Deutsch", es: "Español", fr: "Français", zh: "中文", pt: "Português" },
   landing: {
     badge: "Feito para empreiteiros e empresas de serviços",
-    heroTitle1: "Do orçamento à fatura",
-    heroTitle2: "",
+    heroTitle1: "Crie orçamentos profissionais",
+    heroTitle2: "e faturas",
     heroTitle3: "em segundos.",
     heroDesc: "QuoteCraft ajuda empreiteiros e empresas de serviços a criar orçamentos profissionais, enviar faturas e ganhar mais trabalhos — com menos administração.",
     startFree: "Começar grátis",
