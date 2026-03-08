@@ -4,33 +4,23 @@ import AppLayout from "@/components/AppLayout";
 import StatusBadge from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Download, CheckCircle2, Pencil, Send, Eye } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Pencil, Send, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useBrandSettings } from "@/hooks/useBrandSettings";
 import DocumentPreview from "@/components/DocumentPreview";
+import { formatCurrency, CurrencyCode } from "@/lib/currency";
 
 interface InvoiceItem {
-  id: string;
-  item_name: string;
-  description: string | null;
-  quantity: number;
-  unit_price: number;
-  line_total: number;
+  id: string; item_name: string; description: string | null;
+  quantity: number; unit_price: number; line_total: number;
 }
 
 interface InvoiceDetail {
-  id: string;
-  invoice_number: string;
-  status: string;
-  issue_date: string;
-  due_date: string | null;
-  subtotal: number;
-  tax: number;
-  discount: number;
-  total: number;
-  notes: string | null;
+  id: string; invoice_number: string; status: string; issue_date: string;
+  due_date: string | null; subtotal: number; tax: number; discount: number;
+  total: number; notes: string | null; currency: string;
   customers: { name: string; email: string | null } | null;
 }
 
@@ -47,47 +37,34 @@ const ViewInvoice = () => {
     if (!id) return;
     const { data } = await supabase
       .from("invoices")
-      .select("id, invoice_number, status, issue_date, due_date, subtotal, tax, discount, total, notes, customers(name, email)")
-      .eq("id", id)
-      .maybeSingle();
+      .select("id, invoice_number, status, issue_date, due_date, subtotal, tax, discount, total, notes, currency, customers(name, email)")
+      .eq("id", id).maybeSingle();
     setInvoice(data as any);
-
-    const { data: lineItems } = await supabase
-      .from("invoice_items")
-      .select("*")
-      .eq("invoice_id", id)
-      .order("id");
+    const { data: lineItems } = await supabase.from("invoice_items").select("*").eq("invoice_id", id).order("id");
     setItems((lineItems as any) || []);
     setLoading(false);
   };
 
   useEffect(() => { fetchInvoice(); }, [id]);
 
+  const cur = (invoice?.currency || "USD") as CurrencyCode;
+
   const updateStatus = async (status: string, label: string) => {
     if (!id) return;
     const { error } = await supabase.from("invoices").update({ status }).eq("id", id);
-    if (error) { toast.error(error.message); } else { toast.success(`Marked as ${label}`); fetchInvoice(); }
+    if (error) { toast.error(error.message); } else { toast.success(`${t.invoices.markedAs} ${t.status[label as keyof typeof t.status] || label}`); fetchInvoice(); }
   };
 
-  if (loading) {
-    return <AppLayout><div className="space-y-4"><Skeleton className="h-8 w-48" /><Skeleton className="h-64 rounded-xl" /></div></AppLayout>;
-  }
-
-  if (!invoice) {
-    return <AppLayout><div className="text-center py-12"><p className="text-muted-foreground">{t.invoices.invoiceNotFound}</p><Button variant="outline" className="mt-4" onClick={() => navigate("/invoices")}>{t.invoices.backToInvoices}</Button></div></AppLayout>;
-  }
+  if (loading) return <AppLayout><div className="space-y-4"><Skeleton className="h-8 w-48" /><Skeleton className="h-64 rounded-xl" /></div></AppLayout>;
+  if (!invoice) return <AppLayout><div className="text-center py-12"><p className="text-muted-foreground">{t.invoices.invoiceNotFound}</p><Button variant="outline" className="mt-4" onClick={() => navigate("/invoices")}>{t.invoices.backToInvoices}</Button></div></AppLayout>;
 
   const previewData = {
-    type: "invoice" as const,
-    number: invoice.invoice_number,
-    status: invoice.status,
-    issueDate: invoice.issue_date,
-    dueDate: invoice.due_date || undefined,
-    customerName: invoice.customers?.name,
-    customerEmail: invoice.customers?.email || undefined,
+    type: "invoice" as const, number: invoice.invoice_number, status: invoice.status,
+    issueDate: invoice.issue_date, dueDate: invoice.due_date || undefined,
+    customerName: invoice.customers?.name, customerEmail: invoice.customers?.email || undefined,
     items: items.map(i => ({ name: i.item_name, description: i.description || undefined, quantity: i.quantity, unitPrice: i.unit_price, lineTotal: i.line_total })),
     subtotal: invoice.subtotal, tax: invoice.tax, discount: invoice.discount, total: invoice.total,
-    notes: invoice.notes || undefined,
+    notes: invoice.notes || undefined, currency: invoice.currency,
   };
 
   return (
@@ -107,20 +84,13 @@ const ViewInvoice = () => {
           <Button variant="outline" size="sm" asChild>
             <Link to={`/invoices/${invoice.id}/edit`}><Pencil className="mr-1 h-3.5 w-3.5" />{t.invoices.editInvoice}</Link>
           </Button>
-          <DocumentPreview
-            data={previewData}
-            defaultTemplate={settings.default_invoice_template}
-            trigger={<Button variant="outline" size="sm"><Eye className="mr-1 h-3.5 w-3.5" />{t.invoices.preview}</Button>}
-          />
+          <DocumentPreview data={previewData} defaultTemplate={settings.default_invoice_template}
+            trigger={<Button variant="outline" size="sm"><Eye className="mr-1 h-3.5 w-3.5" />{t.invoices.preview}</Button>} />
           {invoice.status === "draft" && (
-            <Button variant="outline" size="sm" onClick={() => updateStatus("sent", "sent")}>
-              <Send className="mr-1 h-3.5 w-3.5" />{t.invoices.markSent}
-            </Button>
+            <Button variant="outline" size="sm" onClick={() => updateStatus("sent", "sent")}><Send className="mr-1 h-3.5 w-3.5" />{t.invoices.markSent}</Button>
           )}
           {invoice.status !== "paid" && (
-            <Button size="sm" onClick={() => updateStatus("paid", "paid")}>
-              <CheckCircle2 className="mr-1 h-3.5 w-3.5" />{t.invoices.markPaid}
-            </Button>
+            <Button size="sm" onClick={() => updateStatus("paid", "paid")}><CheckCircle2 className="mr-1 h-3.5 w-3.5" />{t.invoices.markPaid}</Button>
           )}
         </div>
       </div>
@@ -134,6 +104,7 @@ const ViewInvoice = () => {
               <div><span className="text-muted-foreground">{t.invoices.email}</span><p className="font-medium text-foreground">{invoice.customers?.email || "—"}</p></div>
               <div><span className="text-muted-foreground">{t.invoices.issueDate}</span><p className="font-medium text-foreground">{invoice.issue_date}</p></div>
               <div><span className="text-muted-foreground">{t.invoices.dueDate}</span><p className="font-medium text-foreground">{invoice.due_date || "—"}</p></div>
+              <div><span className="text-muted-foreground">{t.invoices.currency}</span><p className="font-medium text-foreground">{invoice.currency}</p></div>
             </div>
           </div>
 
@@ -156,8 +127,8 @@ const ViewInvoice = () => {
                       <td className="px-6 py-4 text-sm font-medium text-foreground">{item.item_name}</td>
                       <td className="px-6 py-4 text-sm text-muted-foreground">{item.description || "—"}</td>
                       <td className="px-6 py-4 text-sm text-foreground text-right">{item.quantity}</td>
-                      <td className="px-6 py-4 text-sm text-foreground text-right">${Number(item.unit_price).toFixed(2)}</td>
-                      <td className="px-6 py-4 text-sm font-medium text-foreground text-right">${Number(item.line_total).toFixed(2)}</td>
+                      <td className="px-6 py-4 text-sm text-foreground text-right">{formatCurrency(Number(item.unit_price), cur)}</td>
+                      <td className="px-6 py-4 text-sm font-medium text-foreground text-right">{formatCurrency(Number(item.line_total), cur)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -177,14 +148,14 @@ const ViewInvoice = () => {
           <div className="sticky top-6 rounded-xl border border-border bg-card p-6 shadow-card">
             <h2 className="mb-4 font-semibold text-foreground">{t.invoices.summary}</h2>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">{t.invoices.subtotal}</span><span className="text-foreground">${Number(invoice.subtotal).toFixed(2)}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">{t.invoices.tax}</span><span className="text-foreground">${Number(invoice.tax).toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">{t.invoices.subtotal}</span><span className="text-foreground">{formatCurrency(Number(invoice.subtotal), cur)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">{t.invoices.tax}</span><span className="text-foreground">{formatCurrency(Number(invoice.tax), cur)}</span></div>
               {invoice.discount > 0 && (
-                <div className="flex justify-between"><span className="text-muted-foreground">{t.invoices.discount}</span><span className="text-destructive">-${Number(invoice.discount).toFixed(2)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">{t.invoices.discount}</span><span className="text-destructive">-{formatCurrency(Number(invoice.discount), cur)}</span></div>
               )}
               <div className="flex justify-between border-t border-border pt-2 text-lg font-bold">
                 <span className="text-foreground">{t.invoices.total}</span>
-                <span className="text-foreground">${Number(invoice.total).toFixed(2)}</span>
+                <span className="text-foreground">{formatCurrency(Number(invoice.total), cur)}</span>
               </div>
             </div>
           </div>
