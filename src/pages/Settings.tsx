@@ -60,6 +60,7 @@ const Settings = () => {
     footer_text: "",
     default_quote_template: "minimal" as TemplateName,
     default_invoice_template: "minimal" as TemplateName,
+    default_currency: "USD" as CurrencyCode,
   });
 
   useEffect(() => {
