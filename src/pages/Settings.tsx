@@ -9,7 +9,9 @@ import { toast } from "sonner";
 import { useLanguage, Language } from "@/i18n/LanguageContext";
 import { useBrandSettings } from "@/hooks/useBrandSettings";
 import { TEMPLATE_LIST, TemplateName, generateTemplateHTML } from "@/components/DocumentTemplates";
-import { Upload, X, Check, Palette, FileText, Building2, User, Globe } from "lucide-react";
+import { Upload, X, Check, Palette, FileText, Building2, User, Globe, Coins } from "lucide-react";
+import CurrencySelect from "@/components/CurrencySelect";
+import { CurrencyCode } from "@/lib/currency";
 
 const LANGUAGES: { code: Language; flag: string; label: string }[] = [
   { code: "en", flag: "🇬🇧", label: "English" },
@@ -58,6 +60,7 @@ const Settings = () => {
     footer_text: "",
     default_quote_template: "minimal" as TemplateName,
     default_invoice_template: "minimal" as TemplateName,
+    default_currency: "USD" as CurrencyCode,
   });
 
   useEffect(() => {
@@ -77,6 +80,7 @@ const Settings = () => {
         footer_text: settings.footer_text,
         default_quote_template: (settings.default_quote_template || "minimal") as TemplateName,
         default_invoice_template: (settings.default_invoice_template || "minimal") as TemplateName,
+        default_currency: (settings.default_currency || "USD") as CurrencyCode,
       });
     }
   }, [loading, settings]);
@@ -101,6 +105,8 @@ const Settings = () => {
         default_quote_template: form.default_quote_template,
         default_invoice_template: form.default_invoice_template,
       };
+    } else if (section === "currency") {
+      updates = { default_currency: form.default_currency };
     }
     await updateSettings(updates);
     toast.success(t.settings.saved);
@@ -150,6 +156,7 @@ const Settings = () => {
             { value: "profile", icon: User, label: t.settings.profile },
             { value: "company", icon: Building2, label: t.settings.company },
             { value: "branding", icon: Palette, label: t.settings.branding },
+            { value: "currency", icon: Coins, label: t.settings.currency },
             { value: "language", icon: Globe, label: t.settings.language },
             { value: "templates", icon: FileText, label: t.settings.templates },
           ].map(tab => (
@@ -310,6 +317,18 @@ const Settings = () => {
                 />
               </div>
             </div>
+          </div>
+        </TabsContent>
+
+        {/* CURRENCY */}
+        <TabsContent value="currency">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-card max-w-lg">
+            <h2 className="mb-1 font-semibold text-foreground">{t.settings.defaultCurrency}</h2>
+            <p className="mb-5 text-sm text-muted-foreground">{t.settings.defaultCurrencyDesc}</p>
+            <div className="max-w-xs">
+              <CurrencySelect value={form.default_currency} onValueChange={(v) => setForm({ ...form, default_currency: v })} />
+            </div>
+            <Button className="mt-6" size="sm" onClick={() => handleSave("currency")}>{t.settings.saveChanges}</Button>
           </div>
         </TabsContent>
 

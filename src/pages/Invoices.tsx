@@ -10,6 +10,7 @@ import { Receipt, Plus, Search, CheckCircle2, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { formatCurrency, CurrencyCode } from "@/lib/currency";
 
 interface Invoice {
   id: string;
@@ -18,6 +19,7 @@ interface Invoice {
   issue_date: string;
   due_date: string | null;
   total: number;
+  currency: string;
   customers: { name: string } | null;
 }
 
@@ -30,7 +32,7 @@ const Invoices = () => {
   const fetchInvoices = async () => {
     const { data } = await supabase
       .from("invoices")
-      .select("id, invoice_number, status, issue_date, due_date, total, customers(name)")
+      .select("id, invoice_number, status, issue_date, due_date, total, currency, customers(name)")
       .order("created_at", { ascending: false });
     setInvoices((data as any) || []);
     setLoading(false);
@@ -97,7 +99,7 @@ const Invoices = () => {
                       <td className="px-6 py-4 text-sm text-foreground">{inv.customers?.name || "—"}</td>
                       <td className="px-6 py-4 text-sm text-muted-foreground">{inv.issue_date}</td>
                       <td className="px-6 py-4 text-sm text-muted-foreground">{inv.due_date || "—"}</td>
-                      <td className="px-6 py-4 text-sm font-medium text-foreground text-right">${Number(inv.total).toFixed(2)}</td>
+                      <td className="px-6 py-4 text-sm font-medium text-foreground text-right">{formatCurrency(Number(inv.total), (inv.currency || "USD") as CurrencyCode)}</td>
                       <td className="px-6 py-4"><StatusBadge status={inv.status as any} /></td>
                       <td className="px-6 py-4 text-right space-x-2">
                         {inv.status === "draft" && (

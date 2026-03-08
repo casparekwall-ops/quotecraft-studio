@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { formatCurrency, CurrencyCode } from "@/lib/currency";
 
 interface Quote {
   id: string;
@@ -19,6 +20,7 @@ interface Quote {
   issue_date: string;
   expiry_date: string | null;
   total: number;
+  currency: string;
   customers: { name: string } | null;
 }
 
@@ -33,7 +35,7 @@ const Quotes = () => {
   const fetchQuotes = async () => {
     const { data } = await supabase
       .from("quotes")
-      .select("id, quote_number, status, issue_date, expiry_date, total, customers(name)")
+      .select("id, quote_number, status, issue_date, expiry_date, total, currency, customers(name)")
       .order("created_at", { ascending: false });
     setQuotes((data as any) || []);
     setLoading(false);
@@ -49,16 +51,18 @@ const Quotes = () => {
   const convertToInvoice = async (quote: Quote) => {
     if (!user) return;
     const { data: quoteItems } = await supabase.from("quote_items").select("*").eq("quote_id", quote.id);
-    const { count } = await supabase.from("invoices").select("*", { count: "exact", head: true });
-    const invoiceNumber = `INV-${String((count || 0) + 1).padStart(3, "0")}`;
     const { data: fullQuote } = await supabase.from("quotes").select("*").eq("id", quote.id).single();
     if (!fullQuote) return;
+
+    const { data: numData } = await supabase.rpc("generate_document_number", { p_user_id: user.id, p_doc_type: "invoice" });
+    const invoiceNumber = numData || `QC-I-${Date.now()}`;
 
     const { data: invoice, error } = await supabase.from("invoices").insert({
       user_id: user.id, customer_id: fullQuote.customer_id, invoice_number: invoiceNumber,
       status: "draft", issue_date: new Date().toISOString().split("T")[0],
       subtotal: fullQuote.subtotal, tax: fullQuote.tax, discount: fullQuote.discount,
       total: fullQuote.total, notes: fullQuote.notes, quote_id: quote.id,
+      currency: fullQuote.currency,
     }).select().single();
 
     if (error || !invoice) { toast.error(t.invoices.failedToConvert); return; }
@@ -123,7 +127,7 @@ const Quotes = () => {
                       <td className="px-6 py-4 text-sm font-medium text-primary"><Link to={`/quotes/${q.id}`} className="hover:underline">{q.quote_number}</Link></td>
                       <td className="px-6 py-4 text-sm text-foreground">{q.customers?.name || "—"}</td>
                       <td className="px-6 py-4 text-sm text-muted-foreground">{q.issue_date}</td>
-                      <td className="px-6 py-4 text-sm font-medium text-foreground text-right">${Number(q.total).toFixed(2)}</td>
+                      <td className="px-6 py-4 text-sm font-medium text-foreground text-right">{formatCurrency(Number(q.total), (q.currency || "USD") as CurrencyCode)}</td>
                       <td className="px-6 py-4"><StatusBadge status={q.status as any} /></td>
                       <td className="px-6 py-4 text-right space-x-2">
                         {q.status === "draft" && (

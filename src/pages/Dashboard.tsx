@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useBrandSettings } from "@/hooks/useBrandSettings";
 import { supabase } from "@/integrations/supabase/client";
+import { formatCurrency, CurrencyCode } from "@/lib/currency";
 import {
   FileText, Receipt, CheckCircle2, DollarSign, Plus, Users, ArrowRight,
 } from "lucide-react";
@@ -15,6 +17,8 @@ import {
 const Dashboard = () => {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const { settings } = useBrandSettings();
+  const defaultCur = (settings.default_currency || "USD") as CurrencyCode;
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ quotes: 0, invoices: 0, accepted: 0, revenue: 0 });
   const [recentQuotes, setRecentQuotes] = useState<any[]>([]);
@@ -29,8 +33,8 @@ const Dashboard = () => {
         supabase.from("invoices").select("*", { count: "exact", head: true }),
         supabase.from("quotes").select("*", { count: "exact", head: true }).eq("status", "accepted"),
         supabase.from("invoices").select("total").eq("status", "paid"),
-        supabase.from("quotes").select("id, quote_number, status, total, issue_date, customers(name)").order("created_at", { ascending: false }).limit(3),
-        supabase.from("invoices").select("id, invoice_number, status, total, issue_date, customers(name)").order("created_at", { ascending: false }).limit(3),
+        supabase.from("quotes").select("id, quote_number, status, total, issue_date, currency, customers(name)").order("created_at", { ascending: false }).limit(3),
+        supabase.from("invoices").select("id, invoice_number, status, total, issue_date, currency, customers(name)").order("created_at", { ascending: false }).limit(3),
       ]);
 
       const revenue = (paidRes.data || []).reduce((sum, inv) => sum + Number(inv.total), 0);
@@ -64,7 +68,7 @@ const Dashboard = () => {
           <StatCard title={t.dashboard.totalQuotes} value={String(stats.quotes)} icon={<FileText className="h-4 w-4 text-violet-500" />} gradient="from-violet-500/5 to-purple-500/5" />
           <StatCard title={t.dashboard.totalInvoices} value={String(stats.invoices)} icon={<Receipt className="h-4 w-4 text-cyan-500" />} gradient="from-cyan-500/5 to-blue-500/5" />
           <StatCard title={t.dashboard.acceptedQuotes} value={String(stats.accepted)} icon={<CheckCircle2 className="h-4 w-4 text-emerald-500" />} subtitle={stats.quotes ? `${Math.round((stats.accepted / stats.quotes) * 100)}% ${t.dashboard.acceptanceRate}` : undefined} gradient="from-emerald-500/5 to-green-500/5" />
-          <StatCard title={t.dashboard.revenue} value={`$${stats.revenue.toLocaleString()}`} icon={<DollarSign className="h-4 w-4 text-amber-500" />} subtitle={t.dashboard.fromPaidInvoices} gradient="from-amber-500/5 to-orange-500/5" />
+          <StatCard title={t.dashboard.revenue} value={formatCurrency(stats.revenue, defaultCur)} icon={<DollarSign className="h-4 w-4 text-amber-500" />} subtitle={t.dashboard.fromPaidInvoices} gradient="from-amber-500/5 to-orange-500/5" />
         </div>
       )}
 
@@ -102,7 +106,7 @@ const Dashboard = () => {
                   <div className="text-xs text-muted-foreground">{q.quote_number} · {q.issue_date}</div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-foreground">${Number(q.total).toFixed(2)}</span>
+                  <span className="text-sm font-medium text-foreground">{formatCurrency(Number(q.total), (q.currency || defaultCur) as CurrencyCode)}</span>
                   <StatusBadge status={q.status} />
                 </div>
               </Link>
@@ -125,7 +129,7 @@ const Dashboard = () => {
                   <div className="text-xs text-muted-foreground">{inv.invoice_number} · {inv.issue_date}</div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-foreground">${Number(inv.total).toFixed(2)}</span>
+                  <span className="text-sm font-medium text-foreground">{formatCurrency(Number(inv.total), (inv.currency || defaultCur) as CurrencyCode)}</span>
                   <StatusBadge status={inv.status} />
                 </div>
               </Link>
