@@ -142,6 +142,9 @@ const ViewInvoice = () => {
           </div>
         </div>
         <div className="flex gap-2 flex-wrap">
+          <Button variant="outline" size="sm" asChild>
+            <Link to={`/invoices/${invoice.id}/edit`}><Pencil className="mr-1 h-3.5 w-3.5" />Edit Invoice</Link>
+          </Button>
           <Button variant="outline" size="sm" onClick={handleDownloadPDF}>
             <Download className="mr-1 h-3.5 w-3.5" />Download PDF
           </Button>
