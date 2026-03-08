@@ -15,6 +15,7 @@ export interface BrandSettings {
   footer_text: string;
   default_quote_template: string;
   default_invoice_template: string;
+  default_currency: string;
   full_name: string;
 }
 
