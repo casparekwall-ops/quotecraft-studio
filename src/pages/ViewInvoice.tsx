@@ -64,7 +64,7 @@ const ViewInvoice = () => {
     customerName: invoice.customers?.name, customerEmail: invoice.customers?.email || undefined,
     items: items.map(i => ({ name: i.item_name, description: i.description || undefined, quantity: i.quantity, unitPrice: i.unit_price, lineTotal: i.line_total })),
     subtotal: invoice.subtotal, tax: invoice.tax, discount: invoice.discount, total: invoice.total,
-    notes: invoice.notes || undefined, currency: invoice.currency,
+    notes: invoice.notes || undefined, currency: cur,
   };
 
   return (

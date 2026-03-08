@@ -92,7 +92,7 @@ const ViewQuote = () => {
     customerName: quote.customers?.name, customerEmail: quote.customers?.email || undefined,
     items: items.map(i => ({ name: i.item_name, description: i.description || undefined, quantity: i.quantity, unitPrice: i.unit_price, lineTotal: i.line_total })),
     subtotal: quote.subtotal, tax: quote.tax, discount: quote.discount, total: quote.total,
-    notes: quote.notes || undefined, terms: quote.terms || undefined, currency: quote.currency,
+    notes: quote.notes || undefined, terms: quote.terms || undefined, currency: cur,
   };
 
   return (
