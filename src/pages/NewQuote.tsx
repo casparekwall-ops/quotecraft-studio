@@ -33,7 +33,7 @@ const NewQuote = () => {
   const [customers, setCustomers] = useState<{ id: string; name: string; email?: string | null }[]>([]);
   const [projectDesc, setProjectDesc] = useState("");
   const [notes, setNotes] = useState("");
-  const [terms, setTerms] = useState("Payment due within 14 days of acceptance.");
+  const [terms, setTerms] = useState("");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().split("T")[0]);
   const [expiryDate, setExpiryDate] = useState("");
   const [taxEnabled, setTaxEnabled] = useState(true);
@@ -65,11 +65,16 @@ const NewQuote = () => {
 
   const handleSave = async (status: "draft" | "sent" = "draft") => {
     if (!user) return;
-    if (items.every((i) => !i.name.trim())) { toast.error("Add at least one line item"); return; }
+    if (items.every((i) => !i.name.trim())) { toast.error(t.quotes.addAtLeastOneItem); return; }
     setSaving(true);
 
-    const { count } = await supabase.from("quotes").select("*", { count: "exact", head: true });
-    const quoteNumber = `QT-${String((count || 0) + 1).padStart(3, "0")}`;
+    // Generate number atomically via DB function
+    const { data: numData, error: numError } = await supabase.rpc("generate_document_number", {
+      p_user_id: user.id,
+      p_doc_type: "quote",
+    });
+    if (numError || !numData) { toast.error(numError?.message || "Failed to generate number"); setSaving(false); return; }
+    const quoteNumber = numData as string;
 
     const { data: quote, error } = await supabase.from("quotes").insert({
       user_id: user.id, customer_id: customerId || null, quote_number: quoteNumber,
@@ -97,7 +102,7 @@ const NewQuote = () => {
 
   const previewData = {
     type: "quote" as const,
-    number: "QT-NEW",
+    number: "QC-Q-NEW",
     status: "draft",
     issueDate,
     expiryDate: expiryDate || undefined,

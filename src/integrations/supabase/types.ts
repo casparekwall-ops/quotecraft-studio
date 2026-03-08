@@ -50,6 +50,24 @@ export type Database = {
         }
         Relationships: []
       }
+      document_sequences: {
+        Row: {
+          doc_type: string
+          last_number: number
+          user_id: string
+        }
+        Insert: {
+          doc_type: string
+          last_number?: number
+          user_id: string
+        }
+        Update: {
+          doc_type?: string
+          last_number?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       invoice_items: {
         Row: {
           description: string | null
@@ -325,7 +343,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_document_number: {
+        Args: { p_doc_type: string; p_user_id: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
