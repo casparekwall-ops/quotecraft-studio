@@ -33,8 +33,8 @@ const Dashboard = () => {
         supabase.from("invoices").select("*", { count: "exact", head: true }),
         supabase.from("quotes").select("*", { count: "exact", head: true }).eq("status", "accepted"),
         supabase.from("invoices").select("total").eq("status", "paid"),
-        supabase.from("quotes").select("id, quote_number, status, total, issue_date, customers(name)").order("created_at", { ascending: false }).limit(3),
-        supabase.from("invoices").select("id, invoice_number, status, total, issue_date, customers(name)").order("created_at", { ascending: false }).limit(3),
+        supabase.from("quotes").select("id, quote_number, status, total, issue_date, currency, customers(name)").order("created_at", { ascending: false }).limit(3),
+        supabase.from("invoices").select("id, invoice_number, status, total, issue_date, currency, customers(name)").order("created_at", { ascending: false }).limit(3),
       ]);
 
       const revenue = (paidRes.data || []).reduce((sum, inv) => sum + Number(inv.total), 0);
