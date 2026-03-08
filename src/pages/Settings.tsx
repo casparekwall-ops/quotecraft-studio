@@ -30,16 +30,16 @@ const COLOR_PRESETS = [
   { primary: "#7C3AED", secondary: "#2563EB", label: "Purple & Blue" },
 ];
 
-const TEMPLATE_META: Record<TemplateName, { icon: string; desc: string }> = {
-  minimal: { icon: "○", desc: "Clean, airy layout" },
-  classic: { icon: "◆", desc: "Traditional serif style" },
-  bold: { icon: "▮", desc: "Gradient header accent" },
-  elegant: { icon: "◇", desc: "Centered refinement" },
-  compact: { icon: "▪", desc: "Dense, space-saving" },
-};
-
 const Settings = () => {
   const { t, language, setLanguage } = useLanguage();
+
+  const TEMPLATE_META: Record<TemplateName, { icon: string }> = {
+    minimal: { icon: "○" },
+    classic: { icon: "◆" },
+    bold: { icon: "▮" },
+    elegant: { icon: "◇" },
+    compact: { icon: "▪" },
+  };
   const { settings, loading, updateSettings, uploadLogo, removeLogo } = useBrandSettings();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
