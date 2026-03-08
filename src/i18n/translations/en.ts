@@ -217,6 +217,9 @@ const en = {
     defaultInvoiceTemplate: "Default Invoice Template",
     templateUsedFor: "Used when creating new",
     saved: "Settings saved",
+    currency: "Currency",
+    defaultCurrency: "Default Currency",
+    defaultCurrencyDesc: "Default currency for new quotes and invoices. Can be overridden per document.",
   },
   // Statuses
   status: {
