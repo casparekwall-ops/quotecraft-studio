@@ -320,6 +320,18 @@ const Settings = () => {
           </div>
         </TabsContent>
 
+        {/* CURRENCY */}
+        <TabsContent value="currency">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-card max-w-lg">
+            <h2 className="mb-1 font-semibold text-foreground">{t.settings.defaultCurrency}</h2>
+            <p className="mb-5 text-sm text-muted-foreground">{t.settings.defaultCurrencyDesc}</p>
+            <div className="max-w-xs">
+              <CurrencySelect value={form.default_currency} onValueChange={(v) => setForm({ ...form, default_currency: v })} />
+            </div>
+            <Button className="mt-6" size="sm" onClick={() => handleSave("currency")}>{t.settings.saveChanges}</Button>
+          </div>
+        </TabsContent>
+
         {/* LANGUAGE */}
         <TabsContent value="language">
           <div className="rounded-xl border border-border bg-card p-6 shadow-card max-w-lg">
