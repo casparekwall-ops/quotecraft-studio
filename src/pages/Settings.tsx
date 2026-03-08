@@ -156,6 +156,7 @@ const Settings = () => {
             { value: "profile", icon: User, label: t.settings.profile },
             { value: "company", icon: Building2, label: t.settings.company },
             { value: "branding", icon: Palette, label: t.settings.branding },
+            { value: "currency", icon: Coins, label: t.settings.currency },
             { value: "language", icon: Globe, label: t.settings.language },
             { value: "templates", icon: FileText, label: t.settings.templates },
           ].map(tab => (
