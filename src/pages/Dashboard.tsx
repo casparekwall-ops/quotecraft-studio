@@ -106,7 +106,7 @@ const Dashboard = () => {
                   <div className="text-xs text-muted-foreground">{q.quote_number} · {q.issue_date}</div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-foreground">${Number(q.total).toFixed(2)}</span>
+                  <span className="text-sm font-medium text-foreground">{formatCurrency(Number(q.total), (q.currency || defaultCur) as CurrencyCode)}</span>
                   <StatusBadge status={q.status} />
                 </div>
               </Link>
