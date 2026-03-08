@@ -44,7 +44,7 @@ const ViewInvoice = () => {
       .from("invoices")
       .select("id, invoice_number, status, issue_date, due_date, subtotal, tax, discount, total, notes, customers(name, email)")
       .eq("id", id)
-      .single();
+      .maybeSingle();
     setInvoice(data as any);
 
     const { data: lineItems } = await supabase
