@@ -50,7 +50,7 @@ const NewQuote = () => {
   const taxAmount = taxEnabled ? subtotal * (taxRate / 100) : 0;
   const total = subtotal + taxAmount - discount;
 
-  const handleSave = async () => {
+  const handleSave = async (status: "draft" | "sent" = "draft") => {
     if (!user) return;
     if (items.every((i) => !i.name.trim())) { toast.error("Add at least one line item"); return; }
     setSaving(true);
@@ -63,7 +63,7 @@ const NewQuote = () => {
       user_id: user.id,
       customer_id: customerId || null,
       quote_number: quoteNumber,
-      status: "draft",
+      status,
       issue_date: issueDate,
       expiry_date: expiryDate || null,
       subtotal,
@@ -91,7 +91,7 @@ const NewQuote = () => {
     }
 
     setSaving(false);
-    toast.success("Quote saved as draft");
+    toast.success(status === "sent" ? "Quote saved and sent" : "Quote saved as draft");
     navigate("/quotes");
   };
 
@@ -185,7 +185,8 @@ const NewQuote = () => {
                 <div className="flex justify-between border-t border-border pt-2 text-lg font-bold"><span className="text-foreground">Total</span><span className="text-foreground">${total.toFixed(2)}</span></div>
               </div>
               <div className="space-y-2 pt-2">
-                <Button className="w-full" onClick={handleSave} disabled={saving}>{saving ? "Saving..." : "Save Draft"}</Button>
+                <Button className="w-full" variant="outline" onClick={() => handleSave("draft")} disabled={saving}>{saving ? "Saving..." : "Save Draft"}</Button>
+                <Button className="w-full" onClick={() => handleSave("sent")} disabled={saving}>{saving ? "Saving..." : "Send Quote"}</Button>
               </div>
             </div>
           </div>

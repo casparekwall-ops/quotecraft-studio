@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import StatusBadge from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Download, ArrowRightLeft } from "lucide-react";
+import { ArrowLeft, Download, ArrowRightLeft, Send, Pencil, CheckCircle2, XCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -48,7 +48,7 @@ const ViewQuote = () => {
       .from("quotes")
       .select("id, quote_number, status, issue_date, expiry_date, subtotal, tax, discount, total, notes, terms, customer_id, customers(name, email)")
       .eq("id", id)
-      .single();
+      .maybeSingle();
     setQuote(data as any);
 
     const { data: lineItems } = await supabase
@@ -61,6 +61,12 @@ const ViewQuote = () => {
   };
 
   useEffect(() => { fetchQuote(); }, [id]);
+
+  const updateStatus = async (status: string, label: string) => {
+    if (!id) return;
+    const { error } = await supabase.from("quotes").update({ status }).eq("id", id);
+    if (error) { toast.error(error.message); } else { toast.success(`Marked as ${label}`); fetchQuote(); }
+  };
 
   const convertToInvoice = async () => {
     if (!user || !quote) return;
@@ -97,7 +103,7 @@ const ViewQuote = () => {
     }
 
     toast.success(`Invoice ${invoiceNumber} created`);
-    navigate("/invoices");
+    navigate(`/invoices/${invoice.id}`);
   };
 
   const handleDownloadPDF = () => {
@@ -164,9 +170,27 @@ const ViewQuote = () => {
           </div>
         </div>
         <div className="flex gap-2 flex-wrap">
+          <Button variant="outline" size="sm" asChild>
+            <Link to={`/quotes/${quote.id}/edit`}><Pencil className="mr-1 h-3.5 w-3.5" />Edit Quote</Link>
+          </Button>
           <Button variant="outline" size="sm" onClick={handleDownloadPDF}>
             <Download className="mr-1 h-3.5 w-3.5" />Download PDF
           </Button>
+          {quote.status === "draft" && (
+            <Button variant="outline" size="sm" onClick={() => updateStatus("sent", "sent")}>
+              <Send className="mr-1 h-3.5 w-3.5" />Send Quote
+            </Button>
+          )}
+          {(quote.status === "sent" || quote.status === "draft") && (
+            <Button variant="outline" size="sm" onClick={() => updateStatus("accepted", "accepted")}>
+              <CheckCircle2 className="mr-1 h-3.5 w-3.5" />Mark Accepted
+            </Button>
+          )}
+          {(quote.status === "sent" || quote.status === "draft") && (
+            <Button variant="outline" size="sm" onClick={() => updateStatus("rejected", "rejected")}>
+              <XCircle className="mr-1 h-3.5 w-3.5" />Mark Rejected
+            </Button>
+          )}
           {quote.status === "accepted" && (
             <Button size="sm" onClick={convertToInvoice}>
               <ArrowRightLeft className="mr-1 h-3.5 w-3.5" />Convert to Invoice

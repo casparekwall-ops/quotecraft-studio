@@ -6,7 +6,7 @@ import EmptyState from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FileText, Plus, Search, ArrowRightLeft } from "lucide-react";
+import { FileText, Plus, Search, ArrowRightLeft, Send, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
@@ -38,6 +38,11 @@ const Quotes = () => {
   };
 
   useEffect(() => { fetchQuotes(); }, []);
+
+  const updateStatus = async (id: string, status: string, label: string) => {
+    const { error } = await supabase.from("quotes").update({ status }).eq("id", id);
+    if (error) { toast.error(error.message); } else { toast.success(`Marked as ${label}`); fetchQuotes(); }
+  };
 
   const convertToInvoice = async (quote: Quote) => {
     if (!user) return;
@@ -139,13 +144,23 @@ const Quotes = () => {
                       <td className="px-6 py-4 text-sm text-muted-foreground">{q.issue_date}</td>
                       <td className="px-6 py-4 text-sm font-medium text-foreground text-right">${Number(q.total).toFixed(2)}</td>
                       <td className="px-6 py-4"><StatusBadge status={q.status as any} /></td>
-                      <td className="px-6 py-4 text-right">
-                        {q.status === "accepted" && (
-                          <Button variant="outline" size="sm" onClick={() => convertToInvoice(q)}>
-                            <ArrowRightLeft className="mr-1 h-3.5 w-3.5" />Convert to Invoice
-                          </Button>
-                        )}
-                      </td>
+                       <td className="px-6 py-4 text-right space-x-2">
+                         {q.status === "draft" && (
+                           <Button variant="outline" size="sm" onClick={() => updateStatus(q.id, "sent", "sent")}>
+                             <Send className="mr-1 h-3.5 w-3.5" />Send
+                           </Button>
+                         )}
+                         {(q.status === "sent" || q.status === "draft") && (
+                           <Button variant="outline" size="sm" onClick={() => updateStatus(q.id, "accepted", "accepted")}>
+                             <CheckCircle2 className="mr-1 h-3.5 w-3.5" />Accept
+                           </Button>
+                         )}
+                         {q.status === "accepted" && (
+                           <Button variant="outline" size="sm" onClick={() => convertToInvoice(q)}>
+                             <ArrowRightLeft className="mr-1 h-3.5 w-3.5" />Convert
+                           </Button>
+                         )}
+                       </td>
                     </tr>
                   ))}
                 </tbody>
