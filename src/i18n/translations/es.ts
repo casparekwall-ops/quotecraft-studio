@@ -15,7 +15,8 @@ const es: TranslationKeys = {
   landing: {
     badge: "Hecho para contratistas y empresas de servicios",
     heroTitle1: "Del presupuesto a la factura",
-    heroTitle2: "en segundos.",
+    heroTitle2: "",
+    heroTitle3: "en segundos.",
     heroDesc: "QuoteCraft ayuda a contratistas y empresas de servicios a crear presupuestos profesionales, enviar facturas y ganar más trabajos — con menos administración.",
     startFree: "Empezar gratis",
     viewPricing: "Ver precios",

@@ -15,7 +15,8 @@ const pt: TranslationKeys = {
   landing: {
     badge: "Feito para empreiteiros e empresas de serviços",
     heroTitle1: "Do orçamento à fatura",
-    heroTitle2: "em segundos.",
+    heroTitle2: "",
+    heroTitle3: "em segundos.",
     heroDesc: "QuoteCraft ajuda empreiteiros e empresas de serviços a criar orçamentos profissionais, enviar faturas e ganhar mais trabalhos — com menos administração.",
     startFree: "Começar grátis",
     viewPricing: "Ver preços",
