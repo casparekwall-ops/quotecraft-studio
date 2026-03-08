@@ -376,7 +376,7 @@ const Settings = () => {
                           <span className={`text-xs font-medium ${isSelected ? "text-primary" : "text-foreground"}`}>
                             {t.templates[tmpl]}
                           </span>
-                          <span className="text-[10px] text-muted-foreground mt-0.5">{meta.desc}</span>
+                          <span className="text-[10px] text-muted-foreground mt-0.5">{t.templateDesc[tmpl]}</span>
                           {isSelected && (
                             <div className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
                               <Check className="h-3 w-3" />

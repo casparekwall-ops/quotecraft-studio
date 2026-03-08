@@ -67,7 +67,7 @@ const Quotes = () => {
         quoteItems.map((qi) => ({ invoice_id: invoice.id, item_name: qi.item_name, description: qi.description, quantity: qi.quantity, unit_price: qi.unit_price, line_total: qi.line_total }))
       );
     }
-    toast.success(`Invoice ${invoiceNumber} created from quote`);
+    toast.success(`${t.invoices.invoiceCreated}: ${invoiceNumber}`);
     navigate("/invoices");
   };
 
