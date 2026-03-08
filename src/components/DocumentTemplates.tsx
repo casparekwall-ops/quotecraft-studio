@@ -73,17 +73,17 @@ export function generateTemplateHTML(
       <td style="padding:10px 12px;border-bottom:1px solid #f0f0f0">${i.name}</td>
       <td style="padding:10px 12px;border-bottom:1px solid #f0f0f0;color:#666">${i.description || ""}</td>
       <td style="padding:10px 12px;border-bottom:1px solid #f0f0f0;text-align:right">${i.quantity}</td>
-      <td style="padding:10px 12px;border-bottom:1px solid #f0f0f0;text-align:right">$${Number(i.unitPrice).toFixed(2)}</td>
-      <td style="padding:10px 12px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:500">$${Number(i.lineTotal).toFixed(2)}</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f0f0f0;text-align:right">${fc(Number(i.unitPrice))}</td>
+      <td style="padding:10px 12px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:500">${fc(Number(i.lineTotal))}</td>
     </tr>
   `).join("");
 
   const summaryBlock = `
     <div style="margin-left:auto;width:260px">
-      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px"><span style="color:#666">Subtotal</span><span>$${Number(data.subtotal).toFixed(2)}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px"><span style="color:#666">Tax</span><span>$${Number(data.tax).toFixed(2)}</span></div>
-      ${data.discount > 0 ? `<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px"><span style="color:#666">Discount</span><span style="color:#e53e3e">-$${Number(data.discount).toFixed(2)}</span></div>` : ""}
-      <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:2px solid ${primary};margin-top:8px;font-size:18px;font-weight:700"><span>Total</span><span>$${Number(data.total).toFixed(2)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px"><span style="color:#666">Subtotal</span><span>${fc(Number(data.subtotal))}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px"><span style="color:#666">Tax</span><span>${fc(Number(data.tax))}</span></div>
+      ${data.discount > 0 ? `<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:14px"><span style="color:#666">Discount</span><span style="color:#e53e3e">-${fc(Number(data.discount))}</span></div>` : ""}
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-top:2px solid ${primary};margin-top:8px;font-size:18px;font-weight:700"><span>Total</span><span>${fc(Number(data.total))}</span></div>
     </div>
   `;
 
