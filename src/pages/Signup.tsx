@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, ArrowRight, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -13,11 +14,12 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password.length < 8) {
-      toast.error("Password must be at least 8 characters");
+      toast.error(t.auth.passwordMinLength);
       return;
     }
     setLoading(true);
@@ -33,7 +35,7 @@ const Signup = () => {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Account created! Check your email to confirm.");
+      toast.success(t.auth.accountCreated);
       navigate("/dashboard");
     }
   };
@@ -53,11 +55,10 @@ const Signup = () => {
           </div>
         </div>
         <div className="relative z-10">
-          <p className="mb-2 text-3xl font-bold text-primary-foreground leading-tight">
-            Start winning more jobs
-            <br />with less admin.
+          <p className="mb-2 text-3xl font-bold text-primary-foreground leading-tight whitespace-pre-line">
+            {t.auth.signupHeroTitle}
           </p>
-          <p className="text-primary-foreground/70">Create your free account and send your first quote in minutes.</p>
+          <p className="text-primary-foreground/70">{t.auth.signupHeroDesc}</p>
         </div>
         <p className="relative z-10 text-sm text-primary-foreground/50">© {new Date().getFullYear()} QuoteCraft</p>
       </div>
@@ -70,40 +71,40 @@ const Signup = () => {
             </div>
             <span className="text-xl font-bold text-foreground">QuoteCraft</span>
           </Link>
-          <h1 className="mb-1 text-2xl font-bold text-foreground">Create your account</h1>
-          <p className="mb-8 text-muted-foreground">Get started with QuoteCraft for free.</p>
+          <h1 className="mb-1 text-2xl font-bold text-foreground">{t.auth.createAccount}</h1>
+          <p className="mb-8 text-muted-foreground">{t.auth.createAccountDesc}</p>
 
           <form onSubmit={handleSignup} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full name</Label>
+              <Label htmlFor="name">{t.auth.fullName}</Label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input id="name" placeholder="John Smith" className="pl-10" value={name} onChange={(e) => setName(e.target.value)} required />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t.auth.email}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input id="email" type="email" placeholder="you@company.com" className="pl-10" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t.auth.password}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input id="password" type="password" placeholder="Min. 8 characters" className="pl-10" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
             </div>
             <Button className="w-full" type="submit" disabled={loading}>
-              {loading ? "Creating account..." : "Create account"}
+              {loading ? t.auth.creatingAccount : t.auth.createAccountBtn}
               {!loading && <ArrowRight className="ml-1 h-4 w-4" />}
             </Button>
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link to="/login" className="font-medium text-primary hover:underline">Log in</Link>
+            {t.auth.hasAccount}{" "}
+            <Link to="/login" className="font-medium text-primary hover:underline">{t.auth.logIn}</Link>
           </p>
         </div>
       </div>

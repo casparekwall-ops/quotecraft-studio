@@ -6,12 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,11 +42,10 @@ const Login = () => {
           </div>
         </div>
         <div className="relative z-10">
-          <p className="mb-2 text-3xl font-bold text-primary-foreground leading-tight">
-            From quote to invoice
-            <br />in seconds.
+          <p className="mb-2 text-3xl font-bold text-primary-foreground leading-tight whitespace-pre-line">
+            {t.auth.loginHeroTitle}
           </p>
-          <p className="text-primary-foreground/70">The simplest way to manage your quoting workflow.</p>
+          <p className="text-primary-foreground/70">{t.auth.loginHeroDesc}</p>
         </div>
         <p className="relative z-10 text-sm text-primary-foreground/50">© {new Date().getFullYear()} QuoteCraft</p>
       </div>
@@ -57,12 +58,12 @@ const Login = () => {
             </div>
             <span className="text-xl font-bold text-foreground">QuoteCraft</span>
           </Link>
-          <h1 className="mb-1 text-2xl font-bold text-foreground">Welcome back</h1>
-          <p className="mb-8 text-muted-foreground">Log in to your account to continue.</p>
+          <h1 className="mb-1 text-2xl font-bold text-foreground">{t.auth.welcomeBack}</h1>
+          <p className="mb-8 text-muted-foreground">{t.auth.loginDesc}</p>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t.auth.email}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input id="email" type="email" placeholder="you@company.com" className="pl-10" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -70,8 +71,8 @@ const Login = () => {
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <Link to="/forgot-password" className="text-xs text-primary hover:underline">Forgot password?</Link>
+                <Label htmlFor="password">{t.auth.password}</Label>
+                <Link to="/forgot-password" className="text-xs text-primary hover:underline">{t.auth.forgotPassword}</Link>
               </div>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -79,14 +80,14 @@ const Login = () => {
               </div>
             </div>
             <Button className="w-full" type="submit" disabled={loading}>
-              {loading ? "Logging in..." : "Log in"}
+              {loading ? t.auth.loggingIn : t.auth.logIn}
               {!loading && <ArrowRight className="ml-1 h-4 w-4" />}
             </Button>
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link to="/signup" className="font-medium text-primary hover:underline">Sign up</Link>
+            {t.auth.noAccount}{" "}
+            <Link to="/signup" className="font-medium text-primary hover:underline">{t.auth.signUp}</Link>
           </p>
         </div>
       </div>
