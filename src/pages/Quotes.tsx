@@ -43,7 +43,7 @@ const Quotes = () => {
 
   const updateStatus = async (id: string, status: string, label: string) => {
     const { error } = await supabase.from("quotes").update({ status }).eq("id", id);
-    if (error) { toast.error(error.message); } else { toast.success(`Marked as ${label}`); fetchQuotes(); }
+    if (error) { toast.error(error.message); } else { toast.success(`${t.quotes.markedAs} ${t.status[label as keyof typeof t.status] || label}`); fetchQuotes(); }
   };
 
   const convertToInvoice = async (quote: Quote) => {
@@ -61,13 +61,13 @@ const Quotes = () => {
       total: fullQuote.total, notes: fullQuote.notes, quote_id: quote.id,
     }).select().single();
 
-    if (error || !invoice) { toast.error("Failed to convert"); return; }
+    if (error || !invoice) { toast.error(t.invoices.failedToConvert); return; }
     if (quoteItems && quoteItems.length > 0) {
       await supabase.from("invoice_items").insert(
         quoteItems.map((qi) => ({ invoice_id: invoice.id, item_name: qi.item_name, description: qi.description, quantity: qi.quantity, unit_price: qi.unit_price, line_total: qi.line_total }))
       );
     }
-    toast.success(`Invoice ${invoiceNumber} created from quote`);
+    toast.success(`${t.invoices.invoiceCreated}: ${invoiceNumber}`);
     navigate("/invoices");
   };
 

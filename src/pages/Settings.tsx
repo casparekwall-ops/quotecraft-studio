@@ -30,16 +30,16 @@ const COLOR_PRESETS = [
   { primary: "#7C3AED", secondary: "#2563EB", label: "Purple & Blue" },
 ];
 
-const TEMPLATE_META: Record<TemplateName, { icon: string; desc: string }> = {
-  minimal: { icon: "○", desc: "Clean, airy layout" },
-  classic: { icon: "◆", desc: "Traditional serif style" },
-  bold: { icon: "▮", desc: "Gradient header accent" },
-  elegant: { icon: "◇", desc: "Centered refinement" },
-  compact: { icon: "▪", desc: "Dense, space-saving" },
-};
-
 const Settings = () => {
   const { t, language, setLanguage } = useLanguage();
+
+  const TEMPLATE_META: Record<TemplateName, { icon: string }> = {
+    minimal: { icon: "○" },
+    classic: { icon: "◆" },
+    bold: { icon: "▮" },
+    elegant: { icon: "◇" },
+    compact: { icon: "▪" },
+  };
   const { settings, loading, updateSettings, uploadLogo, removeLogo } = useBrandSettings();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -111,7 +111,7 @@ const Settings = () => {
     if (!file) return;
     const url = await uploadLogo(file);
     if (url) toast.success(t.settings.saved);
-    else toast.error("Upload failed");
+    else toast.error(t.settings.uploadFailed);
   };
 
   const handleRemoveLogo = async () => {
@@ -167,7 +167,7 @@ const Settings = () => {
         <TabsContent value="profile">
           <div className="rounded-xl border border-border bg-card p-6 shadow-card">
             <h2 className="mb-1 font-semibold text-foreground">{t.settings.profileInfo}</h2>
-            <p className="mb-5 text-sm text-muted-foreground">Your personal details</p>
+            <p className="mb-5 text-sm text-muted-foreground">{t.settings.profileDesc}</p>
             <div className="grid gap-4 sm:grid-cols-2 max-w-lg">
               <div className="space-y-2 sm:col-span-2">
                 <Label>{t.settings.fullName}</Label>
@@ -182,7 +182,7 @@ const Settings = () => {
         <TabsContent value="company">
           <div className="rounded-xl border border-border bg-card p-6 shadow-card">
             <h2 className="mb-1 font-semibold text-foreground">{t.settings.companyDetails}</h2>
-            <p className="mb-5 text-sm text-muted-foreground">Appears on your quotes and invoices</p>
+            <p className="mb-5 text-sm text-muted-foreground">{t.settings.companyDesc}</p>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>{t.settings.companyNameLabel}</Label>
@@ -244,7 +244,7 @@ const Settings = () => {
           <div className="grid gap-6 lg:grid-cols-5">
             <div className="rounded-xl border border-border bg-card p-6 shadow-card lg:col-span-2">
               <h2 className="mb-1 font-semibold text-foreground">{t.settings.brandingTitle}</h2>
-              <p className="mb-5 text-sm text-muted-foreground">Controls document colors</p>
+              <p className="mb-5 text-sm text-muted-foreground">{t.settings.brandingDesc}</p>
 
               {/* Color presets */}
               <Label className="mb-2 block">{t.settings.primaryColor}</Label>
@@ -300,7 +300,7 @@ const Settings = () => {
             {/* Live branding preview */}
             <div className="rounded-xl border border-border bg-card p-4 shadow-card lg:col-span-3">
               <div className="mb-2 flex items-center justify-between">
-                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Live Preview</span>
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{t.settings.livePreview}</span>
                 <div className="h-2.5 w-2.5 rounded-full bg-success animate-pulse" />
               </div>
               <div className="overflow-auto rounded-lg border border-border bg-white max-h-[480px]">
@@ -354,7 +354,7 @@ const Settings = () => {
                     {docType === "quote" ? t.settings.defaultQuoteTemplate : t.settings.defaultInvoiceTemplate}
                   </h2>
                   <p className="mb-4 text-sm text-muted-foreground">
-                    Used when creating new {docType}s
+                    {t.settings.templateUsedFor} {docType === "quote" ? t.quotes.title.toLowerCase() : t.invoices.title.toLowerCase()}
                   </p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                     {TEMPLATE_LIST.map(tmpl => {
@@ -376,7 +376,7 @@ const Settings = () => {
                           <span className={`text-xs font-medium ${isSelected ? "text-primary" : "text-foreground"}`}>
                             {t.templates[tmpl]}
                           </span>
-                          <span className="text-[10px] text-muted-foreground mt-0.5">{meta.desc}</span>
+                          <span className="text-[10px] text-muted-foreground mt-0.5">{t.templateDesc[tmpl]}</span>
                           {isSelected && (
                             <div className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
                               <Check className="h-3 w-3" />

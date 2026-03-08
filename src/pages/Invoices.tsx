@@ -40,7 +40,7 @@ const Invoices = () => {
 
   const updateStatus = async (id: string, status: string, label: string) => {
     const { error } = await supabase.from("invoices").update({ status }).eq("id", id);
-    if (error) { toast.error(error.message); } else { toast.success(`Marked as ${label}`); fetchInvoices(); }
+    if (error) { toast.error(error.message); } else { toast.success(`${t.invoices.markedAs} ${t.status[label as keyof typeof t.status] || label}`); fetchInvoices(); }
   };
 
   const filtered = invoices.filter(

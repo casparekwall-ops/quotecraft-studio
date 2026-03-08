@@ -259,6 +259,8 @@ const en = {
     noData: "—",
     selectCustomer: "Select customer",
     item: "Item",
+    notFound: "Oops! Page not found",
+    backToHome: "Return to Home",
   },
   // Billing
   billing: {
