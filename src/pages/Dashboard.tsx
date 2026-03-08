@@ -17,6 +17,8 @@ import {
 const Dashboard = () => {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const { settings } = useBrandSettings();
+  const defaultCur = (settings.default_currency || "USD") as CurrencyCode;
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ quotes: 0, invoices: 0, accepted: 0, revenue: 0 });
   const [recentQuotes, setRecentQuotes] = useState<any[]>([]);
