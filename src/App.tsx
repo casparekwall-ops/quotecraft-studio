@@ -16,6 +16,7 @@ import NewQuote from "./pages/NewQuote";
 import ViewQuote from "./pages/ViewQuote";
 import Invoices from "./pages/Invoices";
 import NewInvoice from "./pages/NewInvoice";
+import EditInvoice from "./pages/EditInvoice";
 import ViewInvoice from "./pages/ViewInvoice";
 import Customers from "./pages/Customers";
 import NewCustomer from "./pages/NewCustomer";
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/invoices" element={<ProtectedRoute><Invoices /></ProtectedRoute>} />
             <Route path="/invoices/new" element={<ProtectedRoute><NewInvoice /></ProtectedRoute>} />
             <Route path="/invoices/:id" element={<ProtectedRoute><ViewInvoice /></ProtectedRoute>} />
+            <Route path="/invoices/:id/edit" element={<ProtectedRoute><EditInvoice /></ProtectedRoute>} />
             <Route path="/customers" element={<ProtectedRoute><Customers /></ProtectedRoute>} />
             <Route path="/customers/new" element={<ProtectedRoute><NewCustomer /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
