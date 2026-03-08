@@ -15,6 +15,8 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { useBrandSettings } from "@/hooks/useBrandSettings";
 import DocumentPreview from "@/components/DocumentPreview";
 import { TEMPLATE_LIST, TemplateName } from "@/components/DocumentTemplates";
+import CurrencySelect from "@/components/CurrencySelect";
+import { formatCurrency, CurrencyCode } from "@/lib/currency";
 
 interface LineItem {
   id: string;
@@ -39,6 +41,7 @@ const NewInvoice = () => {
   const [discount, setDiscount] = useState(0);
   const [saving, setSaving] = useState(false);
   const [template, setTemplate] = useState<TemplateName>("minimal");
+  const [currency, setCurrency] = useState<CurrencyCode>("USD");
   const [items, setItems] = useState<LineItem[]>([
     { id: "1", name: "", description: "", quantity: 1, unitPrice: 0 },
   ]);
@@ -49,7 +52,8 @@ const NewInvoice = () => {
 
   useEffect(() => {
     if (settings.default_invoice_template) setTemplate(settings.default_invoice_template as TemplateName);
-  }, [settings.default_invoice_template]);
+    if (settings.default_currency) setCurrency(settings.default_currency as CurrencyCode);
+  }, [settings.default_invoice_template, settings.default_currency]);
 
   const addItem = () => setItems([...items, { id: Date.now().toString(), name: "", description: "", quantity: 1, unitPrice: 0 }]);
   const removeItem = (id: string) => { if (items.length > 1) setItems(items.filter((i) => i.id !== id)); };
@@ -76,7 +80,7 @@ const NewInvoice = () => {
     const { data: invoice, error } = await supabase.from("invoices").insert({
       user_id: user.id, customer_id: customerId || null, invoice_number: invoiceNumber,
       status, issue_date: issueDate, due_date: dueDate || null,
-      subtotal, tax: taxAmount, discount, total, notes: notes || null,
+      subtotal, tax: taxAmount, discount, total, notes: notes || null, currency,
     }).select().single();
 
     if (error || !invoice) { toast.error(error?.message || "Failed to save"); setSaving(false); return; }
@@ -104,6 +108,7 @@ const NewInvoice = () => {
     dueDate: dueDate || undefined,
     customerName: selectedCustomer?.name,
     customerEmail: selectedCustomer?.email || undefined,
+    currency,
     items: items.filter(i => i.name.trim()).map(i => ({
       name: i.name, description: i.description, quantity: i.quantity,
       unitPrice: i.unitPrice, lineTotal: i.quantity * i.unitPrice,
@@ -111,6 +116,8 @@ const NewInvoice = () => {
     subtotal, tax: taxAmount, discount, total,
     notes: notes || undefined,
   };
+
+  const fc = (amount: number) => formatCurrency(amount, currency);
 
   return (
     <AppLayout>
@@ -135,6 +142,10 @@ const NewInvoice = () => {
                     {customers.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>{t.invoices.currency}</Label>
+                <CurrencySelect value={currency} onValueChange={setCurrency} />
               </div>
               <div className="space-y-2">
                 <Label>{t.invoices.issueDate}</Label>
@@ -167,7 +178,7 @@ const NewInvoice = () => {
                     <Input type="number" placeholder={t.invoices.qty} min={1} value={item.quantity} onChange={(e) => updateItem(item.id, "quantity", Number(e.target.value))} />
                     <Input type="number" placeholder={t.invoices.unitPrice} min={0} step={0.01} value={item.unitPrice || ""} onChange={(e) => updateItem(item.id, "unitPrice", Number(e.target.value))} />
                   </div>
-                  <div className="mt-2 text-right text-sm font-medium text-foreground">{t.invoices.lineTotal}: ${(item.quantity * item.unitPrice).toFixed(2)}</div>
+                  <div className="mt-2 text-right text-sm font-medium text-foreground">{t.invoices.lineTotal}: {fc(item.quantity * item.unitPrice)}</div>
                 </div>
               ))}
             </div>
@@ -200,10 +211,10 @@ const NewInvoice = () => {
               )}
               <div className="space-y-2"><Label>{t.invoices.discount}</Label><Input type="number" min={0} value={discount || ""} onChange={(e) => setDiscount(Number(e.target.value))} /></div>
               <div className="border-t border-border pt-4 space-y-2">
-                <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t.invoices.subtotal}</span><span className="text-foreground">${subtotal.toFixed(2)}</span></div>
-                {taxEnabled && <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t.invoices.tax} ({taxRate}%)</span><span className="text-foreground">${taxAmount.toFixed(2)}</span></div>}
-                {discount > 0 && <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t.invoices.discount}</span><span className="text-destructive">-${discount.toFixed(2)}</span></div>}
-                <div className="flex justify-between border-t border-border pt-2 text-lg font-bold"><span className="text-foreground">{t.invoices.total}</span><span className="text-foreground">${total.toFixed(2)}</span></div>
+                <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t.invoices.subtotal}</span><span className="text-foreground">{fc(subtotal)}</span></div>
+                {taxEnabled && <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t.invoices.tax} ({taxRate}%)</span><span className="text-foreground">{fc(taxAmount)}</span></div>}
+                {discount > 0 && <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t.invoices.discount}</span><span className="text-destructive">-{fc(discount)}</span></div>}
+                <div className="flex justify-between border-t border-border pt-2 text-lg font-bold"><span className="text-foreground">{t.invoices.total}</span><span className="text-foreground">{fc(total)}</span></div>
               </div>
               <div className="space-y-2 pt-2">
                 <DocumentPreview
