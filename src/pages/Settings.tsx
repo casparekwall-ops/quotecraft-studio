@@ -182,7 +182,7 @@ const Settings = () => {
         <TabsContent value="company">
           <div className="rounded-xl border border-border bg-card p-6 shadow-card">
             <h2 className="mb-1 font-semibold text-foreground">{t.settings.companyDetails}</h2>
-            <p className="mb-5 text-sm text-muted-foreground">Appears on your quotes and invoices</p>
+            <p className="mb-5 text-sm text-muted-foreground">{t.settings.companyDesc}</p>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>{t.settings.companyNameLabel}</Label>
