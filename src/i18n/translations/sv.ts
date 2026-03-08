@@ -248,8 +248,9 @@ const sv: TranslationKeys = {
   },
   landing: {
     badge: "Byggt för entreprenörer & tjänsteföretag",
-    heroTitle1: "Från offert till faktura",
-    heroTitle2: "på sekunder.",
+    heroTitle1: "Skapa proffsiga offerter",
+    heroTitle2: "& fakturor",
+    heroTitle3: "på sekunder.",
     heroDesc: "QuoteCraft hjälper entreprenörer och tjänsteföretag skapa professionella offerter, skicka fakturor och vinna fler jobb — med mindre administration.",
     startFree: "Börja gratis",
     viewPricing: "Se priser",
