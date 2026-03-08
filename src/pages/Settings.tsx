@@ -167,7 +167,7 @@ const Settings = () => {
         <TabsContent value="profile">
           <div className="rounded-xl border border-border bg-card p-6 shadow-card">
             <h2 className="mb-1 font-semibold text-foreground">{t.settings.profileInfo}</h2>
-            <p className="mb-5 text-sm text-muted-foreground">Your personal details</p>
+            <p className="mb-5 text-sm text-muted-foreground">{t.settings.profileDesc}</p>
             <div className="grid gap-4 sm:grid-cols-2 max-w-lg">
               <div className="space-y-2 sm:col-span-2">
                 <Label>{t.settings.fullName}</Label>
