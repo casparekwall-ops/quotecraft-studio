@@ -111,7 +111,7 @@ const Settings = () => {
     if (!file) return;
     const url = await uploadLogo(file);
     if (url) toast.success(t.settings.saved);
-    else toast.error("Upload failed");
+    else toast.error(t.settings.uploadFailed);
   };
 
   const handleRemoveLogo = async () => {
